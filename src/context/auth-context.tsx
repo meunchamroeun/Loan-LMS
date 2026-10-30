@@ -93,7 +93,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return true;
     } catch (err: any) {
       toast.error("Login failed", {
-        description: err.message || "Please check your username and password",
+        description:
+          err.message === "Invalid username or password"
+            ? "Invalid credentials. Use 'admin / admin123' for Live API, or switch to Demo Mode."
+            : err.message || "Please check your username and password",
+        action: {
+          label: "Use Demo",
+          onClick: () => {
+            toggleDemoMode(true);
+            toast.info("Switched to Demo Mode. You can now sign in!");
+          },
+        },
       });
       return false;
     } finally {

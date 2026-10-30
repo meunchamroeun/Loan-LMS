@@ -39,8 +39,8 @@ const I18N = {
     langName: "ខ្មែរ",
     title: "ចូលគណនី",
     subtitle: "សូមស្វាគមន៍ — បញ្ចូលព័ត៌មានគណនីដើម្បីបន្ត",
-    identifierLabel: "លេខទូរស័ព្ទ ឬអ៊ីមែល",
-    identifierPlaceholder: "ទូរស័ព្ទ (+855…) ឬអ៊ីមែល",
+    identifierLabel: "ឈ្មោះគណនី (Username)",
+    identifierPlaceholder: "admin",
     passwordLabel: "ពាក្យសម្ងាត់",
     passwordPlaceholder: "••••••••",
     forgotPassword: "ភ្លេចពាក្យសម្ងាត់?",
@@ -58,8 +58,8 @@ const I18N = {
     langName: "English",
     title: "Sign In",
     subtitle: "Welcome back — enter your credentials to continue",
-    identifierLabel: "Phone Number or Email",
-    identifierPlaceholder: "Phone (+855…) or email / username",
+    identifierLabel: "Username",
+    identifierPlaceholder: "admin",
     passwordLabel: "Password",
     passwordPlaceholder: "••••••••",
     forgotPassword: "Forgot password?",
@@ -321,8 +321,30 @@ export function LoginView() {
               </p>
             </div>
 
+            {/* Live Server Credentials Reminder Card */}
+            <div className="mt-4 flex items-center justify-between rounded-xl border border-blue-200/80 bg-blue-50/80 p-2.5 text-xs text-blue-900 dark:border-blue-800/60 dark:bg-blue-950/40 dark:text-blue-200">
+              <div className="flex items-center gap-2 min-w-0">
+                <ShieldCheck className="size-4 shrink-0 text-blue-600 dark:text-blue-400" />
+                <span className="font-medium truncate">
+                  {lang === "km" ? "គណនីជាក់ស្តែង:" : "Live Account:"}{" "}
+                  <code className="rounded bg-blue-500/20 px-1 py-0.5 font-mono font-bold text-blue-800 dark:text-blue-200">admin</code> /{" "}
+                  <code className="rounded bg-blue-500/20 px-1 py-0.5 font-mono font-bold text-blue-800 dark:text-blue-200">admin123</code>
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setIdentifier("admin");
+                  setPassword("admin123");
+                }}
+                className="rounded-md bg-blue-600 px-2.5 py-1 text-[11px] font-semibold text-white shadow-xs transition-colors hover:bg-blue-500 cursor-pointer shrink-0 ml-2"
+              >
+                {lang === "km" ? "បំពេញភ្លាម" : "Auto-Fill"}
+              </button>
+            </div>
+
             {/* Form */}
-            <form onSubmit={handleSubmit} className="mt-5 space-y-4" noValidate>
+            <form onSubmit={handleSubmit} className="mt-3 space-y-4" noValidate>
               {/* Field 1: Identifier (Username / Email / Phone) */}
               <div className="space-y-2">
                 <label
