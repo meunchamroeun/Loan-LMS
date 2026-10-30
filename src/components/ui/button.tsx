@@ -4,9 +4,10 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { motion, HTMLMotionProps } from "motion/react";
+import { MotionOrbitSpinner } from "./motion-loader";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer gap-2",
   {
     variants: {
       variant: {
@@ -44,37 +45,60 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  loading?: boolean;
+  loadingText?: string;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, children, ...props }, ref) => {
+  ({ className, variant, size, loading, loadingText, children, disabled, ...props }, ref) => {
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        disabled={disabled || loading}
         {...props}
       >
-        {children}
+        {loading && (
+          <MotionOrbitSpinner
+            size="xs"
+            color={variant === "outline" || variant === "ghost" || variant === "secondary" ? "slate" : "white"}
+          />
+        )}
+        {loading && loadingText ? loadingText : children}
       </button>
     );
   }
 );
 Button.displayName = "Button";
 
-export const AnimatedButton = React.forwardRef<
-  HTMLButtonElement,
-  HTMLMotionProps<"button"> & VariantProps<typeof buttonVariants>
->(({ className, variant, size, children, ...props }, ref) => {
-  return (
-    <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={cn(buttonVariants({ variant, size, className }))}
-      ref={ref}
-      {...props}
-    >
-      {children}
-    </motion.button>
-  );
-});
+export interface AnimatedButtonProps
+  extends Omit<HTMLMotionProps<"button">, "children">,
+    VariantProps<typeof buttonVariants> {
+  children?: React.ReactNode;
+  loading?: boolean;
+  loadingText?: string;
+}
+
+export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
+  ({ className, variant, size, loading, loadingText, children, disabled, ...props }, ref) => {
+    return (
+      <motion.button
+        whileHover={loading || disabled ? undefined : { scale: 1.02 }}
+        whileTap={loading || disabled ? undefined : { scale: 0.98 }}
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        disabled={disabled || loading}
+        {...props}
+      >
+        {loading && (
+          <MotionOrbitSpinner
+            size="xs"
+            color={variant === "outline" || variant === "ghost" || variant === "secondary" ? "slate" : "white"}
+          />
+        )}
+        {loading && loadingText ? loadingText : children}
+      </motion.button>
+    );
+  }
+);
 AnimatedButton.displayName = "AnimatedButton";

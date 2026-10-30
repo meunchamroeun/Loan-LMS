@@ -219,10 +219,11 @@ export function LoginView() {
 
             <AnimatedButton
               type="submit"
-              disabled={isSubmitting || isLoading}
+              loading={isSubmitting || isLoading}
+              loadingText="Authenticating with Gateway..."
               className="w-full h-10 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm mt-2 shadow-lg shadow-blue-600/30"
             >
-              {isSubmitting ? "Authenticating..." : "Sign In to Console"}
+              Sign In to Console
               <ArrowRight className="ml-2 h-4 w-4" />
             </AnimatedButton>
           </form>

@@ -1,17 +1,38 @@
+"use client";
+
+import React from "react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+
+export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+  shimmer?: boolean;
+}
 
 export function Skeleton({
   className,
+  shimmer = true,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: SkeletonProps) {
   return (
     <div
       className={cn(
-        "animate-pulse rounded-md bg-slate-200/80 dark:bg-slate-800/80",
+        "relative overflow-hidden rounded-md bg-slate-200/70 dark:bg-slate-800/70",
         className
       )}
       {...props}
-    />
+    >
+      {shimmer && (
+        <motion.div
+          animate={{ x: ["-100%", "200%"] }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 dark:via-white/10 to-transparent pointer-events-none"
+        />
+      )}
+    </div>
   );
 }
 
@@ -27,7 +48,7 @@ export function SkeletonTableRows({
       {Array.from({ length: rows }).map((_, rIdx) => (
         <tr key={rIdx} className="border-b border-slate-100 dark:border-slate-800/60">
           {Array.from({ length: columns }).map((_, cIdx) => (
-            <td key={cIdx} className="py-3.5 px-4">
+            <td key={cIdx} className="py-3.5 px-4 whitespace-nowrap">
               {cIdx === 0 ? (
                 <Skeleton className="h-4 w-20" />
               ) : cIdx === 1 ? (

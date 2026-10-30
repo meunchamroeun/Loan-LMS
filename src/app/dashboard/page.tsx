@@ -112,6 +112,9 @@ export default function DashboardPage() {
   const [isAppDialogOpen, setIsAppDialogOpen] = useState(false);
   const [isCustomerDialogOpen, setIsCustomerDialogOpen] = useState(false);
   const [isRepaymentDialogOpen, setIsRepaymentDialogOpen] = useState(false);
+  const [isSubmittingApp, setIsSubmittingApp] = useState(false);
+  const [isSubmittingCustomer, setIsSubmittingCustomer] = useState(false);
+  const [isSubmittingRepayment, setIsSubmittingRepayment] = useState(false);
 
   // Forms
   const [appForm, setAppForm] = useState<CreateApplicationRequest>({
@@ -178,6 +181,7 @@ export default function DashboardPage() {
   // Handlers
   const handleCreateApplication = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmittingApp(true);
     try {
       const created = await api.applications.create(appForm);
       toast.success("Loan application created successfully", {
@@ -188,11 +192,14 @@ export default function DashboardPage() {
       setApplications(updatedApps);
     } catch (err: any) {
       toast.error("Failed to submit application", { description: err.message });
+    } finally {
+      setIsSubmittingApp(false);
     }
   };
 
   const handleCreateCustomer = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmittingCustomer(true);
     try {
       const created = await api.customers.create(customerForm);
       toast.success("Customer registered", {
@@ -203,11 +210,14 @@ export default function DashboardPage() {
       setCustomers(updatedCust);
     } catch (err: any) {
       toast.error("Failed to register customer", { description: err.message });
+    } finally {
+      setIsSubmittingCustomer(false);
     }
   };
 
   const handleRecordRepayment = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmittingRepayment(true);
     try {
       await api.loans.createRepayment(repaymentForm);
       toast.success("Payment recorded", {
@@ -218,6 +228,8 @@ export default function DashboardPage() {
       setStats(dashData);
     } catch (err: any) {
       toast.error("Repayment processing failed", { description: err.message });
+    } finally {
+      setIsSubmittingRepayment(false);
     }
   };
 
@@ -881,7 +893,9 @@ export default function DashboardPage() {
               <Button type="button" variant="outline" onClick={() => setIsAppDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit">Submit Credit Application</Button>
+              <Button type="submit" loading={isSubmittingApp} loadingText="Submitting...">
+                Submit Credit Application
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -981,7 +995,9 @@ export default function DashboardPage() {
               <Button type="button" variant="outline" onClick={() => setIsCustomerDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit">Create Customer Record</Button>
+              <Button type="submit" loading={isSubmittingCustomer} loadingText="Registering...">
+                Create Customer Record
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -1059,7 +1075,12 @@ export default function DashboardPage() {
               <Button type="button" variant="outline" onClick={() => setIsRepaymentDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="emerald">
+              <Button
+                type="submit"
+                variant="emerald"
+                loading={isSubmittingRepayment}
+                loadingText="Posting Repayment..."
+              >
                 Confirm & Post Repayment
               </Button>
             </DialogFooter>

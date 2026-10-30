@@ -36,10 +36,10 @@ const TECH_ITEMS = [
   },
   {
     name: "Motion",
-    url: "https://motion.dev/",
-    badge: "Physics Motion",
+    url: "https://motion.dev/ui/loaders",
+    badge: "Physics Loaders",
     color: "bg-rose-500/10 text-rose-600 border-rose-500/20",
-    description: "Spring physics transitions, interactive button micro-interactions, modal drawers, and staggered data feeds.",
+    description: "Motion.dev jumping dots wave, dual-orbit spinners, real-time equalizer sync bars, and morphing shimmer skeletons.",
   },
   {
     name: "GSAP",
