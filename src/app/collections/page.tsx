@@ -98,7 +98,7 @@ export default function DailyCollectionsPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="text-slate-500 font-medium">Switch Officer:</span>
             {[
               { id: 5, name: "Kimlong Chen" },

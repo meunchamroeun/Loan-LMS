@@ -587,7 +587,7 @@ export default function DashboardPage() {
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                   Select Loan Product Benchmark:
                 </span>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {[
                     { label: "Agri (6.8%)", rate: 6.8 },
                     { label: "SME (7.2%)", rate: 7.2 },

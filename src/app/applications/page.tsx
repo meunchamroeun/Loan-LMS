@@ -379,12 +379,12 @@ export default function ApplicationsPage() {
 
           {selectedApp && (
             <Tabs defaultValue="overview" className="mt-2">
-              <TabsList className="grid grid-cols-5 w-full text-xs">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="risk">Risk Score</TabsTrigger>
-                <TabsTrigger value="guarantors">Guarantors</TabsTrigger>
-                <TabsTrigger value="collaterals">Collaterals</TabsTrigger>
-                <TabsTrigger value="documents">Documents</TabsTrigger>
+              <TabsList className="flex items-center overflow-x-auto w-full text-xs h-auto p-1 gap-1 bg-slate-100 dark:bg-slate-800/80">
+                <TabsTrigger value="overview" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Overview</TabsTrigger>
+                <TabsTrigger value="risk" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Risk Score</TabsTrigger>
+                <TabsTrigger value="guarantors" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Guarantors</TabsTrigger>
+                <TabsTrigger value="collaterals" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Collaterals</TabsTrigger>
+                <TabsTrigger value="documents" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Documents</TabsTrigger>
               </TabsList>
 
               {/* Tab 1: Overview */}
