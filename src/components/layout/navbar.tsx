@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { usePWA } from "@/components/pwa/pwa-provider";
+import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
 import { api } from "@/lib/api-client";
 import { NotificationResponse } from "@/types/api";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,8 @@ export function Navbar() {
 
       {/* Right Controls */}
       <div className="flex items-center gap-3 ml-auto">
+        <TechBadgeShowcase />
+
         {!isOnline && (
           <Badge variant="warning" className="gap-1 text-[11px] h-7 px-2.5">
             <WifiOff className="h-3 w-3" /> Offline Mode

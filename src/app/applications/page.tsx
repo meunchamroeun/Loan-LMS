@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { api } from "@/lib/api-client";
 import {
@@ -53,9 +54,14 @@ import {
   DollarSign,
   UserCheck,
   Building,
+  HelpCircle,
 } from "lucide-react";
 import { formatCurrency, formatDate, formatDateTime } from "@/lib/utils";
 import { toast } from "sonner";
+import { GsapCreditGauge } from "@/components/ui/gsap-gauge";
+import { BaseProgressBar } from "@/components/ui/base-progress";
+import { InfoTooltip } from "@/components/ui/tooltip";
+import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<ApplicationResponse[]>([]);
@@ -302,9 +308,12 @@ export default function ApplicationsPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredApps.map((app) => (
-                    <tr
+                  filteredApps.map((app, idx) => (
+                    <motion.tr
                       key={app.applicationId}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25, delay: idx * 0.04 }}
                       className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                     >
                       <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
@@ -342,7 +351,7 @@ export default function ApplicationsPage() {
                           Inspect & Decide
                         </Button>
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))
                 )}
               </tbody>
@@ -449,24 +458,36 @@ export default function ApplicationsPage() {
               <TabsContent value="risk" className="space-y-4 pt-3">
                 {riskAssessment ? (
                   <div className="space-y-4">
-                    <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/50 to-blue-50/30 dark:from-emerald-950/20 dark:to-blue-950/20 border border-emerald-200/60 dark:border-emerald-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-                      <div>
-                        <span className="text-xs text-slate-500 uppercase font-semibold">
-                          Calculated Credit Score
-                        </span>
-                        <div className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">
-                          {riskAssessment.riskScore}
-                          <span className="text-base font-normal text-slate-400"> / 1000</span>
-                        </div>
-                        <div className="mt-2 flex items-center gap-2">
-                          <Badge variant="success">Risk Level: {riskAssessment.riskLevel}</Badge>
-                          <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
-                            {riskAssessment.assessmentResult}
+                    <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/50 to-blue-50/30 dark:from-emerald-950/20 dark:to-blue-950/20 border border-emerald-200/60 dark:border-emerald-800/50 flex flex-col sm:flex-row items-center justify-between gap-6">
+                      <div className="space-y-3 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-500 uppercase font-semibold">
+                            Automated Underwriting Score
                           </span>
+                          <InfoTooltip content="Calculated using credit bureau history, monthly debt service ratio (DSR), and verified collateral coverage.">
+                            <HelpCircle className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 cursor-pointer" />
+                          </InfoTooltip>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                            {riskAssessment.riskScore}
+                            <span className="text-base font-normal text-slate-400"> / 1000</span>
+                          </div>
+                          <Badge variant="success">Risk Level: {riskAssessment.riskLevel}</Badge>
+                        </div>
+                        <BaseProgressBar
+                          value={riskAssessment.riskScore / 10}
+                          label="Credit Solvency Confidence"
+                          indicatorClassName="bg-emerald-500"
+                        />
+                        <div className="text-xs font-medium text-slate-600 dark:text-slate-300">
+                          Recommendation: <strong>{riskAssessment.assessmentResult}</strong>
                         </div>
                       </div>
-                      <div className="h-20 w-20 rounded-full border-4 border-emerald-500 flex items-center justify-center font-bold text-emerald-600 dark:text-emerald-400 text-lg bg-white dark:bg-slate-900 shadow-inner">
-                        A+
+
+                      {/* GSAP Speedometer Gauge */}
+                      <div className="bg-white/80 dark:bg-slate-900/80 p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                        <GsapCreditGauge score={riskAssessment.riskScore} maxScore={1000} label="Credit Score" />
                       </div>
                     </div>
 

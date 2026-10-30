@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { api } from "@/lib/api-client";
 import {
@@ -15,6 +16,8 @@ import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BaseProgressBar } from "@/components/ui/base-progress";
+import { InfoTooltip } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -167,16 +170,20 @@ export default function LoansPage() {
 
         {/* Active Loan Facilities Selector */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {schedules.map((item) => {
+          {schedules.map((item, idx) => {
             const isSelected = item.loanId === selectedLoanId;
             return (
-              <div
+              <motion.div
                 key={item.loanId}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: idx * 0.05 }}
+                whileHover={{ y: -3 }}
                 onClick={() => setSelectedLoanId(item.loanId)}
                 className={`p-4 rounded-xl border transition-all cursor-pointer ${
                   isSelected
                     ? "border-blue-600 bg-blue-50/40 dark:bg-blue-950/20 shadow-md ring-2 ring-blue-500/20"
-                    : "border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700"
+                    : "border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -189,20 +196,13 @@ export default function LoansPage() {
                   {item.customerName || `Loan #${item.loanId}`}
                 </div>
 
-                {/* Progress bar */}
-                <div className="mt-3 space-y-1.5">
-                  <div className="flex justify-between text-[11px] text-slate-500">
-                    <span>
-                      Progress: {item.paidSchedules} of {item.totalSchedules} paid
-                    </span>
-                    <span className="font-bold">{Math.round(item.progressPercentage)}%</span>
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                      style={{ width: `${item.progressPercentage}%` }}
-                    />
-                  </div>
+                {/* Base UI Progress bar */}
+                <div className="mt-3">
+                  <BaseProgressBar
+                    value={item.progressPercentage}
+                    label={`Installments: ${item.paidSchedules} of ${item.totalSchedules}`}
+                    indicatorClassName={item.progressPercentage >= 80 ? "bg-emerald-500" : "bg-blue-600"}
+                  />
                 </div>
 
                 <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
@@ -211,7 +211,7 @@ export default function LoansPage() {
                     {formatCurrency(item.totalRemainingAmount)}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -263,11 +263,14 @@ export default function LoansPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {scheduleDetail.payments?.map((payment) => {
+                  {scheduleDetail.payments?.map((payment, idx) => {
                     const isPaid = payment.paymentStatus === "PAID";
                     return (
-                      <tr
+                      <motion.tr
                         key={payment.paymentId}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: idx * 0.03 }}
                         className={`hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors ${
                           isPaid ? "bg-emerald-50/20 dark:bg-emerald-950/10" : ""
                         }`}
@@ -311,7 +314,7 @@ export default function LoansPage() {
                             </Button>
                           )}
                         </td>
-                      </tr>
+                      </motion.tr>
                     );
                   })}
                 </tbody>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { api } from "@/lib/api-client";
 import { DailyCollectionResponse } from "@/types/api";
@@ -122,67 +123,90 @@ export default function DailyCollectionsPage() {
         {/* Big Metric Banner: Grand Total */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1: Grand Total */}
-          <Card className="p-6 border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/20">
-            <span className="text-xs uppercase tracking-wider font-semibold text-blue-100">
-              Total Receipts Today
-            </span>
-            <div className="text-3xl font-black mt-2">
-              <GsapCounter
-                value={collection?.grandTotal || 16270.5}
-                prefix="$"
-                duration={1.5}
-                decimals={2}
-              />
-            </div>
-            <div className="flex items-center gap-2 mt-4 text-xs text-blue-100">
-              <CheckCircle className="h-4 w-4" />
-              <span>36 Total Repayment Transactions</span>
-            </div>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="p-6 border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/20 h-full flex flex-col justify-between">
+              <div>
+                <span className="text-xs uppercase tracking-wider font-semibold text-blue-100">
+                  Total Receipts Today
+                </span>
+                <div className="text-3xl font-black mt-2">
+                  <GsapCounter
+                    value={collection?.grandTotal || 16270.5}
+                    prefix="$"
+                    duration={1.5}
+                    decimals={2}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mt-4 text-xs text-blue-100">
+                <CheckCircle className="h-4 w-4" />
+                <span>36 Total Repayment Transactions</span>
+              </div>
+            </Card>
+          </motion.div>
 
           {/* Card 2: Cash Over-the-Counter */}
-          <Card className="p-6 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase text-slate-500">
-                  Cash Physical Desk
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.08 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="p-6 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between h-full hover:shadow-md transition-all">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase text-slate-500">
+                    Cash Physical Desk
+                  </span>
+                  <Badge variant="warning">Cash Drawer</Badge>
+                </div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
+                  {formatCurrency(collection?.cash?.totalAmount || 4850)}
+                </div>
+                <span className="text-xs text-slate-400 mt-1 block">
+                  {collection?.cash?.count || 14} Cash receipts accepted
                 </span>
-                <Badge variant="warning">Cash Drawer</Badge>
               </div>
-              <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
-                {formatCurrency(collection?.cash?.totalAmount || 4850)}
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
+                <span>Currency: USD</span>
+                <span className="text-emerald-600 font-semibold">Counted & Matched</span>
               </div>
-              <span className="text-xs text-slate-400 mt-1 block">
-                {collection?.cash?.count || 14} Cash receipts accepted
-              </span>
-            </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
-              <span>Currency: USD</span>
-              <span className="text-emerald-600 font-semibold">Counted & Matched</span>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
           {/* Card 3: Bank Transfer (ABA / Wing) */}
-          <Card className="p-6 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase text-slate-500">
-                  Digital Bank Transfers
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.16 }}
+            whileHover={{ y: -4 }}
+          >
+            <Card className="p-6 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between h-full hover:shadow-md transition-all">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase text-slate-500">
+                    Digital Bank Transfers
+                  </span>
+                  <Badge variant="info">Bakong / ABA</Badge>
+                </div>
+                <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
+                  {formatCurrency(collection?.bankTransfer?.totalAmount || 11420.5)}
+                </div>
+                <span className="text-xs text-slate-400 mt-1 block">
+                  {collection?.bankTransfer?.count || 22} Cleared online transfers
                 </span>
-                <Badge variant="info">Bakong / ABA</Badge>
               </div>
-              <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
-                {formatCurrency(collection?.bankTransfer?.totalAmount || 11420.5)}
+              <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
+                <span>Channel: Real-time Gateway</span>
+                <span className="text-blue-600 font-semibold">100% Reconciled</span>
               </div>
-              <span className="text-xs text-slate-400 mt-1 block">
-                {collection?.bankTransfer?.count || 22} Cleared online transfers
-              </span>
-            </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
-              <span>Channel: Real-time Gateway</span>
-              <span className="text-blue-600 font-semibold">100% Reconciled</span>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
         </div>
 
         {/* Visual Channel Distribution */}

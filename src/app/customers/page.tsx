@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { api } from "@/lib/api-client";
 import {
@@ -14,6 +15,7 @@ import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GsapCounter } from "@/components/ui/gsap-counter";
 import {
   Dialog,
   DialogContent,
@@ -156,9 +158,14 @@ export default function CustomersPage() {
         {/* Header Title */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Customer Directory
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                Customer Directory
+              </h1>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                <GsapCounter value={customers.length} duration={1} /> Verified
+              </span>
+            </div>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               Manage client KYC, verified national IDs, employment profiles, and creditworthiness records.
             </p>
@@ -204,64 +211,71 @@ export default function CustomersPage() {
 
         {/* Customer Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredCustomers.map((customer) => (
-            <Card
+          {filteredCustomers.map((customer, idx) => (
+            <motion.div
               key={customer.customerId}
-              className="p-5 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/50 transition-all flex flex-col justify-between"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: idx * 0.04 }}
+              whileHover={{ y: -3 }}
             >
-              <div>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-11 w-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-                      {customer.firstName[0]}
-                      {customer.lastName[0]}
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-900 dark:text-white text-sm">
-                        {customer.firstName} {customer.lastName}
+              <Card
+                className="p-5 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/50 hover:shadow-md transition-all flex flex-col justify-between h-full"
+              >
+                <div>
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="h-11 w-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                        {customer.firstName[0]}
+                        {customer.lastName[0]}
                       </div>
-                      <span className="text-xs text-slate-400 font-mono">
-                        {customer.nationalId}
-                      </span>
+                      <div>
+                        <div className="font-bold text-slate-900 dark:text-white text-sm">
+                          {customer.firstName} {customer.lastName}
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">
+                          {customer.nationalId}
+                        </span>
+                      </div>
                     </div>
+                    <Badge variant="success">Active KYC</Badge>
                   </div>
-                  <Badge variant="success">Active KYC</Badge>
+
+                  <div className="space-y-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <Phone className="h-3.5 w-3.5 text-slate-400" />
+                      <span>{customer.phoneNumber}</span>
+                    </div>
+                    {customer.email && (
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                        <Mail className="h-3.5 w-3.5 text-slate-400" />
+                        <span className="truncate">{customer.email}</span>
+                      </div>
+                    )}
+                    {customer.address && (
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                        <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                        <span className="truncate">{customer.address}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div className="space-y-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
-                  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                    <Phone className="h-3.5 w-3.5 text-slate-400" />
-                    <span>{customer.phoneNumber}</span>
-                  </div>
-                  {customer.email && (
-                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                      <Mail className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="truncate">{customer.email}</span>
-                    </div>
-                  )}
-                  {customer.address && (
-                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                      <MapPin className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="truncate">{customer.address}</span>
-                    </div>
-                  )}
+                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <span className="text-[11px] text-slate-400">
+                    DOB: {formatDate(customer.dateOfBirth)}
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => openProfile(customer)}
+                    className="h-8 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700"
+                  >
+                    View Profile & Employment
+                  </Button>
                 </div>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                <span className="text-[11px] text-slate-400">
-                  DOB: {formatDate(customer.dateOfBirth)}
-                </span>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => openProfile(customer)}
-                  className="h-8 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700"
-                >
-                  View Profile & Employment
-                </Button>
-              </div>
-            </Card>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>

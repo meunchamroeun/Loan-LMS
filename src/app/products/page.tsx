@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { api } from "@/lib/api-client";
 import { LoanProductResponse, CreateLoanProductRequest } from "@/types/api";
@@ -9,6 +10,8 @@ import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BaseToggleSwitch } from "@/components/ui/base-switch";
+import { InfoTooltip } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -116,84 +119,88 @@ export default function LoanProductsPage() {
 
         {/* Product Catalog Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {products.map((product) => {
+          {products.map((product, idx) => {
             const isActive = product.status === "ACTIVE";
             return (
-              <Card
+              <motion.div
                 key={product.loanProductId}
-                className="p-6 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/40 transition-all flex flex-col justify-between"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: idx * 0.08 }}
+                whileHover={{ y: -4 }}
               >
-                <div>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                        <Layers className="h-5 w-5" />
+                <Card className="p-6 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/40 hover:shadow-lg transition-all flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                          <Layers className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-base text-slate-900 dark:text-white">
+                            {product.productName}
+                          </h3>
+                          <span className="text-xs text-slate-400">
+                            Product Code: #LP-{product.loanProductId.toString().padStart(3, "0")}
+                          </span>
+                        </div>
+                      </div>
+                      <Badge variant={isActive ? "success" : "secondary"}>
+                        {product.status}
+                      </Badge>
+                    </div>
+
+                    <p className="mt-4 text-xs text-slate-600 dark:text-slate-400 leading-relaxed min-h-[3rem]">
+                      {product.description || "Comprehensive credit facility tailored for retail or agricultural borrowers."}
+                    </p>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 text-xs">
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[11px] text-slate-400">Interest (APR)</span>
+                          <InfoTooltip content="Annual Percentage Rate calculated on declining balance.">
+                            <span className="text-slate-400 text-[10px] cursor-pointer">ⓘ</span>
+                          </InfoTooltip>
+                        </div>
+                        <div className="text-base font-bold text-blue-600 dark:text-blue-400">
+                          {product.interestRate}%
+                        </div>
                       </div>
                       <div>
-                        <h3 className="font-bold text-base text-slate-900 dark:text-white">
-                          {product.productName}
-                        </h3>
-                        <span className="text-xs text-slate-400">
-                          Product Code: #LP-{product.loanProductId.toString().padStart(3, "0")}
-                        </span>
+                        <span className="text-[11px] text-slate-400">Max Facility</span>
+                        <div className="text-base font-bold text-slate-900 dark:text-white">
+                          {formatCurrency(product.maxLoanAmount)}
+                        </div>
                       </div>
-                    </div>
-                    <Badge variant={isActive ? "success" : "secondary"}>
-                      {product.status}
-                    </Badge>
-                  </div>
-
-                  <p className="mt-4 text-xs text-slate-600 dark:text-slate-400 leading-relaxed min-h-[3rem]">
-                    {product.description || "Comprehensive credit facility tailored for retail or agricultural borrowers."}
-                  </p>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 text-xs">
-                    <div>
-                      <span className="text-[11px] text-slate-400">Interest (APR)</span>
-                      <div className="text-base font-bold text-blue-600 dark:text-blue-400">
-                        {product.interestRate}%
+                      <div>
+                        <span className="text-[11px] text-slate-400">Min Income</span>
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
+                          {formatCurrency(product.minimumIncome)}
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400">Max Facility</span>
-                      <div className="text-base font-bold text-slate-900 dark:text-white">
-                        {formatCurrency(product.maxLoanAmount)}
-                      </div>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400">Min Income</span>
-                      <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
-                        {formatCurrency(product.minimumIncome)}
-                      </div>
-                    </div>
-                    <div>
-                      <span className="text-[11px] text-slate-400">Tenure Range</span>
-                      <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
-                        {product.minimumTermMonths} - {product.maximumTermMonths} Mo
+                      <div>
+                        <span className="text-[11px] text-slate-400">Tenure Range</span>
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
+                          {product.minimumTermMonths} - {product.maximumTermMonths} Mo
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                  <span className="text-slate-400">
-                    Processing Fee: <strong>{product.processingFee}%</strong>
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleToggleStatus(product.loanProductId, product.status)}
-                      className={`h-8 text-xs gap-1.5 ${
-                        isActive ? "text-amber-600 hover:text-amber-700" : "text-emerald-600 hover:text-emerald-700"
-                      }`}
-                    >
-                      <Power className="h-3.5 w-3.5" />
-                      {isActive ? "Deactivate" : "Activate"}
-                    </Button>
+                  <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                    <span className="text-slate-400">
+                      Processing Fee: <strong>{product.processingFee}%</strong>
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-slate-500 font-medium">Status</span>
+                      <BaseToggleSwitch
+                        checked={isActive}
+                        onCheckedChange={() => handleToggleStatus(product.loanProductId, product.status)}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             );
           })}
         </div>

@@ -19,6 +19,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GsapCounter } from "@/components/ui/gsap-counter";
 import { BaseLoanSlider } from "@/components/ui/base-slider";
+import { BaseProgressBar } from "@/components/ui/base-progress";
+import { BaseAccordionGroup } from "@/components/ui/base-accordion";
+import { InfoTooltip } from "@/components/ui/tooltip";
+import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
 import {
   Dialog,
   DialogContent,
@@ -48,6 +52,10 @@ import {
   ChevronRight,
   DollarSign,
   FileText,
+  HelpCircle,
+  ShieldCheck,
+  Layers,
+  Info,
 } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import {
@@ -251,108 +259,136 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* 4 Metric KPI Cards with GSAP Counters */}
+        {/* 4 Metric KPI Cards with GSAP Counters, Motion Hover & Radix Tooltips */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Disbursed */}
-          <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-blue-500/50 transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Total Disbursed
-              </span>
-              <div className="h-9 w-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                <TrendingUp className="h-4 w-4" />
+          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+            <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-blue-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    Total Disbursed
+                  </span>
+                  <InfoTooltip content="Cumulative principal amount issued to active verified borrowers.">
+                    <HelpCircle className="h-3 w-3 text-slate-400 hover:text-slate-600 cursor-pointer" />
+                  </InfoTooltip>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                  <TrendingUp className="h-4 w-4" />
+                </div>
               </div>
-            </div>
-            <div className="mt-3">
-              <div className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                <GsapCounter
-                  value={stats?.totalDisbursed || 14500000}
-                  prefix="$"
-                  duration={1.5}
-                />
+              <div className="mt-3">
+                <div className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <GsapCounter
+                    value={stats?.totalDisbursed || 14500000}
+                    prefix="$"
+                    duration={1.5}
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400">
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                  <span className="font-medium">+14.2%</span>
+                  <span className="text-slate-400">vs last quarter</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400">
-                <ArrowUpRight className="h-3.5 w-3.5" />
-                <span className="font-medium">+14.2%</span>
-                <span className="text-slate-400">vs last quarter</span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
           {/* Card 2: Total Collected */}
-          <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-emerald-500/50 transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Total Collected
-              </span>
-              <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                <DollarSign className="h-4 w-4" />
+          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+            <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-emerald-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    Total Collected
+                  </span>
+                  <InfoTooltip content="Gross principal + interest repayments collected via bank transfers and cash drawers.">
+                    <HelpCircle className="h-3 w-3 text-slate-400 hover:text-slate-600 cursor-pointer" />
+                  </InfoTooltip>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                  <DollarSign className="h-4 w-4" />
+                </div>
               </div>
-            </div>
-            <div className="mt-3">
-              <div className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                <GsapCounter
-                  value={stats?.totalCollected || 9820450}
-                  prefix="$"
-                  duration={1.5}
-                />
+              <div className="mt-3">
+                <div className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <GsapCounter
+                    value={stats?.totalCollected || 9820450}
+                    prefix="$"
+                    duration={1.5}
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400">
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                  <span className="font-medium">96.8%</span>
+                  <span className="text-slate-400">collection efficiency</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 mt-2 text-xs text-emerald-600 dark:text-emerald-400">
-                <ArrowUpRight className="h-3.5 w-3.5" />
-                <span className="font-medium">96.8%</span>
-                <span className="text-slate-400">collection efficiency</span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
           {/* Card 3: Active Loans */}
-          <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-indigo-500/50 transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Active Loans
-              </span>
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-                <CreditCard className="h-4 w-4" />
+          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+            <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-indigo-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    Active Loans
+                  </span>
+                  <InfoTooltip content="Total credit facilities actively undergoing scheduled monthly installments.">
+                    <HelpCircle className="h-3 w-3 text-slate-400 hover:text-slate-600 cursor-pointer" />
+                  </InfoTooltip>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                  <CreditCard className="h-4 w-4" />
+                </div>
               </div>
-            </div>
-            <div className="mt-3">
-              <div className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                <GsapCounter
-                  value={stats?.activeLoans || 284}
-                  duration={1.2}
-                />
+              <div className="mt-3">
+                <div className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <GsapCounter
+                    value={stats?.activeLoans || 284}
+                    duration={1.2}
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 mt-2 text-xs text-slate-500 dark:text-slate-400">
+                  <span>Total files: {stats?.totalLoans || 326}</span>
+                  <span className="text-slate-300 dark:text-slate-700">•</span>
+                  <span className="text-blue-600 dark:text-blue-400 font-medium">{stats?.completedLoans || 35} completed</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 mt-2 text-xs text-slate-500 dark:text-slate-400">
-                <span>Total files: {stats?.totalLoans || 326}</span>
-                <span className="text-slate-300 dark:text-slate-700">•</span>
-                <span className="text-blue-600 dark:text-blue-400 font-medium">{stats?.completedLoans || 35} completed</span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
           {/* Card 4: Overdue Installments */}
-          <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-rose-500/50 transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Overdue / Delinquent
-              </span>
-              <div className="h-9 w-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-                <AlertCircle className="h-4 w-4" />
+          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+            <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-rose-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    Overdue / Delinquent
+                  </span>
+                  <InfoTooltip content="Portfolio-at-Risk (PAR 30) - Installments unpaid past grace period.">
+                    <HelpCircle className="h-3 w-3 text-slate-400 hover:text-slate-600 cursor-pointer" />
+                  </InfoTooltip>
+                </div>
+                <div className="h-9 w-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                  <AlertCircle className="h-4 w-4" />
+                </div>
               </div>
-            </div>
-            <div className="mt-3">
-              <div className="text-2xl font-bold tracking-tight text-rose-600 dark:text-rose-400">
-                <GsapCounter
-                  value={stats?.overduePayments || 19}
-                  duration={1.2}
-                />
+              <div className="mt-3">
+                <div className="text-2xl font-bold tracking-tight text-rose-600 dark:text-rose-400">
+                  <GsapCounter
+                    value={stats?.overduePayments || 19}
+                    duration={1.2}
+                  />
+                </div>
+                <div className="flex items-center gap-1.5 mt-2 text-xs text-rose-500">
+                  <span className="font-medium">2.1%</span>
+                  <span className="text-slate-400">portfolio at risk (PAR 30)</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 mt-2 text-xs text-rose-500">
-                <span className="font-medium">2.1%</span>
-                <span className="text-slate-400">portfolio at risk (PAR 30)</span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
         </div>
 
         {/* Charts Section: Area Trend & Portfolio Donut */}
@@ -587,8 +623,13 @@ export default function DashboardPage() {
                 <span className="text-xs text-slate-500">per month ({calcTerm} installments)</span>
               </div>
 
-              <div className="space-y-1.5 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs">
-                <div className="flex justify-between text-slate-500">
+              <div className="space-y-2 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs">
+                <BaseProgressBar
+                  value={(calcAmount / (totalPayable || 1)) * 100}
+                  label="Principal Capital Share"
+                  indicatorClassName="bg-blue-600"
+                />
+                <div className="flex justify-between text-slate-500 pt-1">
                   <span>Total Principal:</span>
                   <span className="font-medium text-slate-800 dark:text-slate-200">{formatCurrency(calcAmount)}</span>
                 </div>
@@ -651,7 +692,7 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {applications.slice(0, 5).map((app) => {
+                {applications.slice(0, 5).map((app, idx) => {
                   const statusColors: Record<string, "success" | "warning" | "info" | "default" | "destructive"> = {
                     APPROVED: "success",
                     DISBURSED: "info",
@@ -660,8 +701,11 @@ export default function DashboardPage() {
                     REJECTED: "destructive",
                   };
                   return (
-                    <tr
+                    <motion.tr
                       key={app.applicationId}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25, delay: idx * 0.05 }}
                       className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                     >
                       <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
@@ -692,13 +736,64 @@ export default function DashboardPage() {
                           Review <ChevronRight className="h-3 w-3" />
                         </a>
                       </td>
-                    </tr>
+                    </motion.tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
         </Card>
+
+        {/* Base UI Accordion: Underwriting Knowledge Base & Regulatory Policies */}
+        <div className="space-y-3 pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                Underwriting Policies & Knowledge Base
+              </h3>
+              <p className="text-xs text-slate-500">
+                Interactive regulatory guidelines powered by Base UI Accordion (<code className="text-blue-600 dark:text-blue-400 font-mono">@base-ui/react/accordion</code>)
+              </p>
+            </div>
+            <Badge variant="info" className="text-[10px] w-fit">NBC Standard Compliant</Badge>
+          </div>
+
+          <BaseAccordionGroup
+            items={[
+              {
+                value: "eligibility",
+                title: "Borrower Eligibility Criteria & Debt-to-Income (DTI) Ratios",
+                icon: <Users className="h-4 w-4 text-blue-500" />,
+                content: (
+                  <p>
+                    Applicants must have a minimum verified monthly income of $400 for microfinance and $1,200 for SME business lines. Total monthly debt obligations including the requested facility must not exceed 45% of verified net cash flows.
+                  </p>
+                ),
+              },
+              {
+                value: "collateral",
+                title: "Collateral Valuation & Loan-to-Value (LTV) Thresholds",
+                icon: <Layers className="h-4 w-4 text-emerald-500" />,
+                content: (
+                  <p>
+                    Real estate and hard title deeds qualify for up to 70% LTV of forced sale valuation. Vehicle registrations and soft titles qualify for up to 50% LTV, requiring physical inspection and lien registration.
+                  </p>
+                ),
+              },
+              {
+                value: "collection",
+                title: "Early Repayment, Grace Periods & Delinquency Escalation (PAR 30)",
+                icon: <Clock className="h-4 w-4 text-amber-500" />,
+                content: (
+                  <p>
+                    Borrowers enjoy a 5-day grace period post installment due date. Overdue accounts exceeding 30 days are automatically escalated to field collection officers and trigger automated SMS and email reminders.
+                  </p>
+                ),
+              },
+            ]}
+          />
+        </div>
       </div>
 
       {/* --- Dialog 1: New Loan Application Wizard --- */}

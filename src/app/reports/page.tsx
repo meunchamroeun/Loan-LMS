@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { AppLayout } from "@/components/layout/app-layout";
 import { api } from "@/lib/api-client";
 import { LoanReportResponse, PaymentReportResponse } from "@/types/api";
@@ -171,9 +172,12 @@ export default function ReportsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    {filteredLoans.map((loan) => (
-                      <tr
+                    {filteredLoans.map((loan, idx) => (
+                      <motion.tr
                         key={loan.loanId}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2, delay: idx * 0.03 }}
                         className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                       >
                         <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
@@ -195,7 +199,7 @@ export default function ReportsPage() {
                         </td>
                         <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.startDate)}</td>
                         <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.endDate)}</td>
-                      </tr>
+                      </motion.tr>
                     ))}
                   </tbody>
                 </table>
@@ -240,11 +244,14 @@ export default function ReportsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    {filteredPayments.map((p) => {
+                    {filteredPayments.map((p, idx) => {
                       const isPaid = p.paymentStatus === "PAID";
                       return (
-                        <tr
+                        <motion.tr
                           key={p.paymentId}
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2, delay: idx * 0.03 }}
                           className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                         >
                           <td className="py-3.5 px-4 font-mono text-slate-400">
@@ -270,7 +277,7 @@ export default function ReportsPage() {
                           <td className="py-3.5 px-4 text-slate-500">
                             {formatDate(p.paymentDate) || "-"}
                           </td>
-                        </tr>
+                        </motion.tr>
                       );
                     })}
                   </tbody>
