@@ -1,18 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import {
   Banknote,
   Lock,
   User,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck,
   Zap,
   Sparkles,
   Server,
   Layers,
   ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +25,8 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
 
 export function LoginView() {
-  const { login, toggleDemoMode, isLoading } = useAuth();
+  const router = useRouter();
+  const { user, isAuthenticated, isDemoMode, login, toggleDemoMode, isLoading } = useAuth();
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("password");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,19 +34,53 @@ export function LoginView() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await login(username, password);
+    const success = await login(username, password);
     setIsSubmitting(false);
+    if (success) {
+      router.push("/dashboard");
+    }
   };
 
   const handleQuickDemo = () => {
     toggleDemoMode(true);
+    router.push("/dashboard");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 relative overflow-hidden px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 relative overflow-hidden px-4 py-16">
       {/* Dynamic Background Glows */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Top Navigation Bar: Back to Dashboard & Active Session */}
+      <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-20">
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white border border-slate-800 shadow-md transition-all cursor-pointer group"
+        >
+          <ArrowLeft className="h-4 w-4 text-blue-400 group-hover:-translate-x-0.5 transition-transform" />
+          <span>Back to Dashboard</span>
+        </Link>
+        <div className="flex items-center gap-3">
+          {user && (
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>
+                Active Session: <strong>{user.username}</strong> ({user.role})
+              </span>
+            </div>
+          )}
+          <a
+            href="https://loan.cavkim.tech/webjars/swagger-ui/index.html"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-xs font-medium text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
+          >
+            <span>Swagger API</span>
+            <ExternalLink className="h-3 w-3" />
+          </a>
+        </div>
+      </div>
 
       <div className="w-full max-w-4xl grid md:grid-cols-2 rounded-3xl border border-slate-800 bg-slate-900/90 shadow-2xl backdrop-blur-xl overflow-hidden relative z-10">
         {/* Left Side: Brand & Feature Presentation */}

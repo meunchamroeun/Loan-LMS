@@ -89,6 +89,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await api.auth.logout();
       setUser(null);
+      setIsDemoMode(false);
+      api.setDemoMode(false);
       toast.info("Logged out successfully");
     } finally {
       setIsLoading(false);

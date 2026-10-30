@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Bell,
   Search,
@@ -12,6 +13,7 @@ import {
   Laptop,
   Download,
   WifiOff,
+  LogIn,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { usePWA } from "@/components/pwa/pwa-provider";
@@ -88,6 +90,14 @@ export function Navbar() {
 
       {/* Right Controls */}
       <div className="flex items-center gap-3 ml-auto">
+        <Link
+          href="/login"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-blue-200 dark:border-blue-800/80 bg-blue-50/80 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-400 transition-colors shadow-xs"
+        >
+          <LogIn className="h-3.5 w-3.5" />
+          <span>Login Tab</span>
+        </Link>
+
         <TechBadgeShowcase />
 
         {!isOnline && (
@@ -206,6 +216,12 @@ export function Navbar() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/login" className="cursor-pointer font-medium text-blue-600 dark:text-blue-400">
+                <LogIn className="h-3.5 w-3.5 mr-2" />
+                Login / Switch Account
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <a href="/customers" className="cursor-pointer">
                 Manage Customers

@@ -12,6 +12,7 @@ import {
   CalendarCheck2,
   BarChart3,
   LogOut,
+  LogIn,
   Sparkles,
   ShieldCheck,
   ChevronRight,
@@ -62,6 +63,12 @@ const NAV_ITEMS = [
     href: "/reports",
     icon: BarChart3,
     badge: null,
+  },
+  {
+    name: "Login / Auth Portal",
+    href: "/login",
+    icon: LogIn,
+    badge: "Auth",
   },
 ];
 
