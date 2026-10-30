@@ -13,6 +13,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GsapCounter } from "@/components/ui/gsap-counter";
@@ -238,7 +239,7 @@ export default function CustomersPage() {
                         </span>
                       </div>
                     </div>
-                    <Badge variant="success">Active KYC</Badge>
+                    <StatusBadge status="ACTIVE_KYC" />
                   </div>
 
                   <div className="space-y-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">

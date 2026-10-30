@@ -14,6 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BaseProgressBar } from "@/components/ui/base-progress";
@@ -190,7 +191,7 @@ export default function LoansPage() {
                   <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400">
                     {item.loanNumber}
                   </span>
-                  <Badge variant="success">{item.status}</Badge>
+                  <StatusBadge status={item.status} />
                 </div>
                 <div className="font-semibold text-sm text-slate-900 dark:text-white">
                   {item.customerName || `Loan #${item.loanId}`}
@@ -294,9 +295,7 @@ export default function LoansPage() {
                           {formatCurrency(payment.amountPaid)}
                         </td>
                         <td className="py-3 px-4">
-                          <Badge variant={isPaid ? "success" : "warning"}>
-                            {payment.paymentStatus}
-                          </Badge>
+                          <StatusBadge status={payment.paymentStatus} />
                         </td>
                         <td className="py-3 px-4 text-right">
                           {isPaid ? (

@@ -18,6 +18,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -214,20 +215,7 @@ export default function ApplicationsPage() {
   });
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "APPROVED":
-        return <Badge variant="success">Approved</Badge>;
-      case "DISBURSED":
-        return <Badge variant="info">Disbursed</Badge>;
-      case "UNDER_REVIEW":
-        return <Badge variant="warning">Under Review</Badge>;
-      case "SUBMITTED":
-        return <Badge variant="purple">Submitted</Badge>;
-      case "REJECTED":
-        return <Badge variant="destructive">Rejected</Badge>;
-      default:
-        return <Badge variant="default">{status}</Badge>;
-    }
+    return <StatusBadge status={status} />;
   };
 
   return (
@@ -277,7 +265,12 @@ export default function ApplicationsPage() {
                       : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
-                  {status === "ALL" ? "All Statuses" : status.replace("_", " ")}
+                  {status === "ALL"
+                    ? "All Statuses"
+                    : status
+                        .toLowerCase()
+                        .replace(/_/g, " ")
+                        .replace(/\b\w/g, (c) => c.toUpperCase())}
                 </button>
               )
             )}

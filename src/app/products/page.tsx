@@ -8,6 +8,7 @@ import { LoanProductResponse, CreateLoanProductRequest } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BaseToggleSwitch } from "@/components/ui/base-switch";
@@ -145,9 +146,7 @@ export default function LoanProductsPage() {
                           </span>
                         </div>
                       </div>
-                      <Badge variant={isActive ? "success" : "secondary"}>
-                        {product.status}
-                      </Badge>
+                      <StatusBadge status={product.status} />
                     </div>
 
                     <p className="mt-4 text-xs text-slate-600 dark:text-slate-400 leading-relaxed min-h-[3rem]">

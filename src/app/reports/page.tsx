@@ -8,6 +8,7 @@ import { LoanReportResponse, PaymentReportResponse } from "@/types/api";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   BarChart3,
@@ -193,9 +194,7 @@ export default function ReportsPage() {
                           {formatCurrency(loan.outstandingBalance)}
                         </td>
                         <td className="py-3.5 px-4">
-                          <Badge variant={loan.loanStatus === "ACTIVE" ? "success" : "secondary"}>
-                            {loan.loanStatus}
-                          </Badge>
+                          <StatusBadge status={loan.loanStatus} />
                         </td>
                         <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.startDate)}</td>
                         <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.endDate)}</td>
@@ -270,9 +269,7 @@ export default function ReportsPage() {
                             {formatCurrency(p.amountPaid)}
                           </td>
                           <td className="py-3.5 px-4">
-                            <Badge variant={isPaid ? "success" : "warning"}>
-                              {p.paymentStatus}
-                            </Badge>
+                            <StatusBadge status={p.paymentStatus} />
                           </td>
                           <td className="py-3.5 px-4 text-slate-500">
                             {formatDate(p.paymentDate) || "-"}

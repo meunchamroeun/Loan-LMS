@@ -15,6 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GsapCounter } from "@/components/ui/gsap-counter";
@@ -693,13 +694,6 @@ export default function DashboardPage() {
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {applications.slice(0, 5).map((app, idx) => {
-                  const statusColors: Record<string, "success" | "warning" | "info" | "default" | "destructive"> = {
-                    APPROVED: "success",
-                    DISBURSED: "info",
-                    UNDER_REVIEW: "warning",
-                    PENDING: "default",
-                    REJECTED: "destructive",
-                  };
                   return (
                     <motion.tr
                       key={app.applicationId}
@@ -724,9 +718,7 @@ export default function DashboardPage() {
                         {app.requestedTermMonths} Months
                       </td>
                       <td className="py-3.5 px-4">
-                        <Badge variant={statusColors[app.applicationStatus] || "default"}>
-                          {app.applicationStatus}
-                        </Badge>
+                        <StatusBadge status={app.applicationStatus} />
                       </td>
                       <td className="py-3.5 px-4 text-right">
                         <a
