@@ -24,12 +24,14 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { MOCK_LOAN_REPORTS, MOCK_PAYMENT_REPORTS } from "@/lib/mock-data";
 import { toast } from "sonner";
 
 export default function ReportsPage() {
   const [loans, setLoans] = useState<LoanReportResponse[]>([]);
   const [payments, setPayments] = useState<PaymentReportResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSampleMode, setIsSampleMode] = useState(false);
 
   // Search
   const [loanSearch, setLoanSearch] = useState("");
@@ -38,12 +40,17 @@ export default function ReportsPage() {
   const loadReports = async () => {
     setLoading(true);
     try {
-      const [loansData, paymentsData] = await Promise.all([
-        api.reports.getLoans(),
-        api.reports.getPayments(),
-      ]);
-      setLoans(loansData);
-      setPayments(paymentsData);
+      if (isSampleMode) {
+        setLoans(MOCK_LOAN_REPORTS);
+        setPayments(MOCK_PAYMENT_REPORTS);
+      } else {
+        const [loansData, paymentsData] = await Promise.all([
+          api.reports.getLoans(),
+          api.reports.getPayments(),
+        ]);
+        setLoans(loansData || []);
+        setPayments(paymentsData || []);
+      }
     } catch (err: any) {
       toast.error("Failed to load reports", { description: err.message });
     } finally {
@@ -53,7 +60,7 @@ export default function ReportsPage() {
 
   useEffect(() => {
     loadReports();
-  }, []);
+  }, [isSampleMode]);
 
   const exportLoansCSV = () => {
     const headers = "Loan Number,Customer Name,Approved Amount,Outstanding Balance,Status,Start Date,End Date\n";
@@ -116,9 +123,19 @@ export default function ReportsPage() {
               Generate regulatory portfolio reports, export audit CSV sheets, and inspect cash flows.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="outline"
+              size="sm"
+              onClick={() => setIsSampleMode(!isSampleMode)}
+              className="gap-1.5 text-xs"
+            >
+              <BarChart3 className="h-3.5 w-3.5 text-blue-500" />
+              {isSampleMode ? "View Live Reports" : "Preview Sample Analytics"}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => window.print()}
               className="gap-2 text-xs"
             >
@@ -176,6 +193,12 @@ export default function ReportsPage() {
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {loading ? (
                       <SkeletonTableRows rows={6} columns={7} />
+                    ) : filteredLoans.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="py-12 text-center text-slate-400 text-xs">
+                          No matching loans found in portfolio.
+                        </td>
+                      </tr>
                     ) : (
                       filteredLoans.map((loan, idx) => (
                         <motion.tr
@@ -250,6 +273,12 @@ export default function ReportsPage() {
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {loading ? (
                       <SkeletonTableRows rows={6} columns={7} />
+                    ) : filteredPayments.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="py-12 text-center text-slate-400 text-xs">
+                          No payment inflow records found for this period. Click &quot;Preview Sample Analytics&quot; to test with historical records.
+                        </td>
+                      </tr>
                     ) : (
                       filteredPayments.map((p, idx) => {
                         const isPaid = p.paymentStatus === "PAID";

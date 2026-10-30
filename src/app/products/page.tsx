@@ -72,7 +72,8 @@ export default function LoanProductsPage() {
   }, []);
 
   const handleToggleStatus = async (id: number, currentStatus: string) => {
-    const nextStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    const isCurrentlyActive = (currentStatus || "").toUpperCase() === "ACTIVE";
+    const nextStatus = isCurrentlyActive ? "Inactive" : "Active";
     try {
       await api.loanProducts.updateStatus(id, nextStatus);
       toast.success(`Product status changed to ${nextStatus}`);
@@ -128,7 +129,7 @@ export default function LoanProductsPage() {
             ))
           ) : (
             products.map((product, idx) => {
-              const isActive = product.status === "ACTIVE";
+              const isActive = (product.status || "").toUpperCase() === "ACTIVE";
               return (
               <motion.div
                 key={product.loanProductId}

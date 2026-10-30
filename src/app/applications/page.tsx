@@ -124,17 +124,17 @@ export default function ApplicationsPage() {
     setDetailLoading(true);
     try {
       const [risk, guar, coll, docs, hist] = await Promise.all([
-        api.applications.getRiskAssessment(app.applicationId),
-        api.applications.getGuarantors(app.applicationId),
-        api.applications.getCollaterals(app.applicationId),
-        api.applications.getDocuments(app.applicationId),
-        api.applications.getHistory(app.applicationId),
+        api.applications.getRiskAssessment(app.applicationId).catch(() => null),
+        api.applications.getGuarantors(app.applicationId).catch(() => []),
+        api.applications.getCollaterals(app.applicationId).catch(() => []),
+        api.applications.getDocuments(app.applicationId).catch(() => []),
+        api.applications.getHistory(app.applicationId).catch(() => []),
       ]);
       setRiskAssessment(risk);
-      setGuarantors(guar);
-      setCollaterals(coll);
-      setDocuments(docs);
-      setHistory(hist);
+      setGuarantors(guar || []);
+      setCollaterals(coll || []);
+      setDocuments(docs || []);
+      setHistory(hist || []);
     } catch (err: any) {
       console.warn("Could not load full detail components", err);
     } finally {
@@ -210,8 +210,9 @@ export default function ApplicationsPage() {
       (app.customerName && app.customerName.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (app.loanPurpose && app.loanPurpose.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    const matchesStatus =
-      selectedStatus === "ALL" || app.applicationStatus === selectedStatus;
+    const appStatusNorm = (app.applicationStatus || "").toUpperCase().replace(/[\s-]/g, "_");
+    const selStatusNorm = (selectedStatus || "").toUpperCase().replace(/[\s-]/g, "_");
+    const matchesStatus = selectedStatus === "ALL" || appStatusNorm === selStatusNorm;
 
     return matchesSearch && matchesStatus;
   });
@@ -384,6 +385,7 @@ export default function ApplicationsPage() {
                 <TabsTrigger value="guarantors" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Guarantors</TabsTrigger>
                 <TabsTrigger value="collaterals" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Collaterals</TabsTrigger>
                 <TabsTrigger value="documents" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Documents</TabsTrigger>
+                <TabsTrigger value="history" className="flex-1 shrink-0 py-1.5 px-2 text-[11px] sm:text-xs">Audit History</TabsTrigger>
               </TabsList>
 
               {/* Tab 1: Overview */}
@@ -606,6 +608,43 @@ export default function ApplicationsPage() {
                   </div>
                 ))}
               </TabsContent>
+
+              {/* Tab 6: Audit History */}
+              <TabsContent value="history" className="space-y-3 pt-3">
+                {history.length === 0 ? (
+                  <div className="p-8 text-center text-slate-400 text-xs">
+                    No status transition history recorded yet.
+                  </div>
+                ) : (
+                  history.map((h, idx) => {
+                    const fromStat = h.oldStatus || h.fromStatus || "Draft";
+                    const toStat = h.newStatus || h.toStatus || "Submitted";
+                    const note = h.remark || h.comments || "Status updated";
+                    const dateVal = h.createdAt || h.changedAt;
+
+                    return (
+                      <div
+                        key={h.historyId || idx}
+                        className="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-xs"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="font-mono text-[10px]">
+                              {fromStat}
+                            </Badge>
+                            <span className="text-slate-400">→</span>
+                            <StatusBadge status={toStat} />
+                          </div>
+                          <p className="text-slate-600 dark:text-slate-400">{note}</p>
+                        </div>
+                        <div className="text-right text-[11px] text-slate-400 whitespace-nowrap">
+                          {formatDateTime(dateVal)}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </TabsContent>
             </Tabs>
           )}
 
@@ -615,38 +654,41 @@ export default function ApplicationsPage() {
               Close
             </Button>
 
-            {selectedApp && (
-              <>
-                {(selectedApp.applicationStatus === "DRAFT" || selectedApp.applicationStatus === "PENDING") && (
-                  <Button
-                    onClick={() => handleSubmitToReview(selectedApp.applicationId)}
-                    className="gap-1.5"
-                  >
-                    <Send className="h-3.5 w-3.5" /> Submit to Credit Committee
-                  </Button>
-                )}
+            {selectedApp && (() => {
+              const appStatus = (selectedApp.applicationStatus || "").toUpperCase().replace(/[\s-]/g, "_");
+              return (
+                <>
+                  {(appStatus === "DRAFT" || appStatus === "PENDING") && (
+                    <Button
+                      onClick={() => handleSubmitToReview(selectedApp.applicationId)}
+                      className="gap-1.5"
+                    >
+                      <Send className="h-3.5 w-3.5" /> Submit to Credit Committee
+                    </Button>
+                  )}
 
-                {(selectedApp.applicationStatus === "SUBMITTED" || selectedApp.applicationStatus === "UNDER_REVIEW") && (
-                  <Button
-                    onClick={() => handleApprove(selectedApp.applicationId)}
-                    variant="emerald"
-                    className="gap-1.5"
-                  >
-                    <CheckCircle className="h-3.5 w-3.5" /> Approve Credit
-                  </Button>
-                )}
+                  {(appStatus === "SUBMITTED" || appStatus === "UNDER_REVIEW") && (
+                    <Button
+                      onClick={() => handleApprove(selectedApp.applicationId)}
+                      variant="emerald"
+                      className="gap-1.5"
+                    >
+                      <CheckCircle className="h-3.5 w-3.5" /> Approve Credit
+                    </Button>
+                  )}
 
-                {selectedApp.applicationStatus === "APPROVED" && (
-                  <Button
-                    onClick={() => handleDisburse(selectedApp.applicationId)}
-                    variant="indigo"
-                    className="gap-1.5"
-                  >
-                    <Banknote className="h-3.5 w-3.5" /> Disburse Loan Funds
-                  </Button>
-                )}
-              </>
-            )}
+                  {appStatus === "APPROVED" && (
+                    <Button
+                      onClick={() => handleDisburse(selectedApp.applicationId)}
+                      variant="indigo"
+                      className="gap-1.5"
+                    >
+                      <Banknote className="h-3.5 w-3.5" /> Disburse Loan Funds
+                    </Button>
+                  )}
+                </>
+              );
+            })()}
           </DialogFooter>
         </DialogContent>
       </Dialog>

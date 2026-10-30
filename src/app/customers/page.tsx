@@ -145,11 +145,13 @@ export default function CustomersPage() {
   };
 
   const filteredCustomers = customers.filter((c) => {
-    const fullName = `${c.firstName} ${c.lastName}`.toLowerCase();
+    const fullName = `${c.firstName || ""} ${c.lastName || ""}`.toLowerCase();
+    const natId = (c.nationalId || "").toLowerCase();
+    const phone = c.phoneNumber || "";
     const matchesSearch =
       fullName.includes(searchQuery.toLowerCase()) ||
-      c.nationalId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.phoneNumber.includes(searchQuery);
+      natId.includes(searchQuery.toLowerCase()) ||
+      phone.includes(searchQuery);
 
     const matchesGender = genderFilter === "ALL" || c.gender === genderFilter;
     return matchesSearch && matchesGender;
@@ -237,19 +239,19 @@ export default function CustomersPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div className="h-11 w-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm shrink-0">
-                        {customer.firstName[0]}
-                        {customer.lastName[0]}
+                        {customer.firstName?.[0] || "C"}
+                        {customer.lastName?.[0] || ""}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="font-bold text-slate-900 dark:text-white text-sm whitespace-nowrap truncate">
                           {customer.firstName} {customer.lastName}
                         </div>
                         <span className="text-xs text-slate-400 font-mono whitespace-nowrap block">
-                          {customer.nationalId}
+                          {customer.nationalId || "No ID Recorded"}
                         </span>
                       </div>
                     </div>
-                    <StatusBadge status="ACTIVE_KYC" className="shrink-0" />
+                    <StatusBadge status={customer.status || "ACTIVE_KYC"} className="shrink-0" />
                   </div>
 
                   <div className="space-y-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">

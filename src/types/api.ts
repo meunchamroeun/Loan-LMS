@@ -171,11 +171,15 @@ export interface CreateApplicationRequest {
 export interface ApplicationStatusHistoryResponse {
   historyId: number;
   applicationId: number;
-  fromStatus: string;
-  toStatus: string;
+  fromStatus?: string;
+  toStatus?: string;
+  oldStatus?: string;
+  newStatus?: string;
   changedBy: number;
   comments?: string;
-  changedAt: string;
+  remark?: string;
+  changedAt?: string;
+  createdAt?: string;
 }
 
 // Risk Assessment types
@@ -369,21 +373,29 @@ export interface RepaymentResponse {
   totalAmount: number;
   paymentMethod: string;
   paymentStatus: string;
+  status?: string;
   paidAt: string;
   notes?: string;
+  transactionReference?: string;
 }
 
 // Schedule & Collection types
 export interface SchedulePaymentItemResponse {
-  paymentId: number;
-  installmentNumber: number;
+  paymentId?: number;
+  scheduleId?: number;
+  installmentNumber?: number;
+  paymentNo?: number;
   dueDate: string;
-  principalDue: number;
-  interestDue: number;
-  totalDue: number;
+  principalDue?: number;
+  interestDue?: number;
+  totalDue?: number;
+  amountDue?: number;
   amountPaid: number;
+  remainingBalance?: number;
   paymentStatus: "PENDING" | "PAID" | "OVERDUE" | "PARTIAL" | string;
-  paymentDate?: string;
+  paymentDate?: string | null;
+  lateFee?: number;
+  penaltyAmount?: number;
 }
 
 export interface LoanScheduleDetailResponse {
@@ -393,14 +405,14 @@ export interface LoanScheduleDetailResponse {
   customerId: number;
   customerName: string;
   customerPhone?: string;
-  employeeId?: number;
+  employeeId?: number | null;
   employeeName?: string;
   principalAmount: number;
-  currency: string;
-  duration: number;
-  repaymentFrequency: string;
-  startDate: string;
-  endDate: string;
+  currency?: string;
+  duration?: number;
+  repaymentFrequency?: string;
+  startDate?: string;
+  endDate?: string;
   installmentAmount: number;
   totalSchedules: number;
   paidSchedules: number;
@@ -417,8 +429,13 @@ export interface LoanScheduleItemResponse {
   scheduleId: number;
   loanId: number;
   loanNumber: string;
+  customerId?: number;
   customerName?: string;
+  customerPhone?: string;
   principalAmount: number;
+  currency?: string;
+  duration?: number;
+  repaymentFrequency?: string;
   totalSchedules: number;
   paidSchedules: number;
   remainingSchedules: number;
@@ -438,8 +455,15 @@ export interface PaginatedLoanScheduleResponse {
 }
 
 export interface ChannelCollectionResponse {
-  count: number;
-  totalAmount: number;
+  count?: number;
+  transactionCount?: number;
+  totalAmount?: number;
+  total?: number;
+  principal?: number;
+  interest?: number;
+  serviceFee?: number;
+  penalty?: number;
+  pendingVerificationAmount?: number;
 }
 
 export interface DailyCollectionResponse {

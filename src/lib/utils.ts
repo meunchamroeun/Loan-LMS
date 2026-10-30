@@ -6,13 +6,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number | null | undefined, currency: string = "USD"): string {
-  if (amount == null || isNaN(amount)) return "$0.00";
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
+  if (amount == null || isNaN(amount)) return currency?.toUpperCase() === "KHR" ? "៛0" : "$0.00";
+  try {
+    const isKHR = currency?.toUpperCase() === "KHR" || (currency === "USD" && amount >= 500000);
+    if (isKHR) {
+      return `៛${Math.round(amount).toLocaleString("en-US")}`;
+    }
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency || "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  } catch {
+    return `$${Number(amount).toFixed(2)}`;
+  }
 }
 
 export function formatDate(dateString: string | null | undefined): string {

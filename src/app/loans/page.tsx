@@ -75,9 +75,10 @@ export default function LoansPage() {
     setLoading(true);
     try {
       const res = await api.loans.getSchedules();
-      setSchedules(res.items || []);
-      if (res.items?.length > 0 && !selectedLoanId) {
-        setSelectedLoanId(res.items[0].loanId);
+      const items = res.items || [];
+      setSchedules(items);
+      if (items.length > 0) {
+        setSelectedLoanId(items[0].loanId);
       }
     } catch (err: any) {
       toast.error("Failed to load loan schedules", { description: err.message });
@@ -94,7 +95,7 @@ export default function LoansPage() {
         ...prev,
         loanId: detail.loanId,
         scheduleId: detail.scheduleId,
-        totalAmount: detail.installmentAmount,
+        totalAmount: detail.installmentAmount || 1000,
       }));
     } catch (err: any) {
       console.warn("Could not load detail for loan", loanId, err);
@@ -111,19 +112,21 @@ export default function LoansPage() {
     }
   }, [selectedLoanId]);
 
-  const handlePayInstallmentDirectly = async (payment: SchedulePaymentItemResponse) => {
+  const handlePayInstallmentDirectly = async (payment: SchedulePaymentItemResponse, idx: number) => {
+    const instNo = payment.installmentNumber ?? payment.paymentNo ?? (idx + 1);
+    const amountToPay = payment.totalDue ?? payment.amountDue ?? 1000;
     try {
       await api.loans.createRepayment({
         loanId: selectedLoanId,
-        scheduleId: scheduleDetail?.scheduleId,
+        scheduleId: payment.scheduleId ?? scheduleDetail?.scheduleId,
         paymentMethod: "BANK_TRANSFER",
-        totalAmount: payment.totalDue,
+        totalAmount: amountToPay,
         paidAt: new Date().toISOString(),
         bankReference: "QR-" + Math.floor(100000 + Math.random() * 900000),
-        notes: `Installment #${payment.installmentNumber} direct settlement`,
+        notes: `Installment #${instNo} settlement`,
       });
       toast.success("Installment Paid", {
-        description: `Installment #${payment.installmentNumber} (${formatCurrency(payment.totalDue)}) recorded successfully.`,
+        description: `Installment #${instNo} (${formatCurrency(amountToPay)}) recorded successfully.`,
       });
       loadScheduleDetail(selectedLoanId);
       loadSchedules();
@@ -171,13 +174,30 @@ export default function LoansPage() {
         </div>
 
         {/* Active Loan Facilities Selector */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, i) => (
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
               <SkeletonCatalogCard key={i} />
-            ))
-          ) : (
-            schedules.map((item, idx) => {
+            ))}
+          </div>
+        ) : schedules.length === 0 ? (
+          <Card className="p-8 text-center border border-dashed border-slate-200 dark:border-slate-800 space-y-3">
+            <Banknote className="h-10 w-10 text-slate-400 mx-auto" />
+            <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">
+              No Active Loan Schedules
+            </h3>
+            <p className="text-xs text-slate-500 max-w-md mx-auto">
+              Active loan repayment schedules are created once loan applications are approved and disbursed.
+            </p>
+            <div className="pt-2">
+              <Button size="sm" asChild variant="outline" className="text-xs">
+                <a href="/applications">Go to Applications</a>
+              </Button>
+            </div>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {schedules.map((item, idx) => {
               const isSelected = item.loanId === selectedLoanId;
               return (
                 <motion.div
@@ -215,14 +235,14 @@ export default function LoansPage() {
                   <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
                     <span className="text-slate-400 whitespace-nowrap">Remaining Bal:</span>
                     <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">
-                      {formatCurrency(item.totalRemainingAmount)}
+                      {formatCurrency(item.totalRemainingAmount, item.currency)}
                     </span>
                   </div>
                 </motion.div>
               );
-            })
-          )}
-        </div>
+            })}
+          </div>
+        )}
 
         {/* Selected Loan Amortization Schedule Detail Table */}
         {scheduleDetail && (
@@ -276,9 +296,16 @@ export default function LoansPage() {
                   ) : (
                     scheduleDetail.payments?.map((payment, idx) => {
                     const isPaid = payment.paymentStatus === "PAID";
+                    const instNumber = payment.installmentNumber ?? payment.paymentNo ?? (idx + 1);
+                    const totalAmt = payment.totalDue ?? payment.amountDue ?? 0;
+                    const prinAmt = payment.principalDue ?? (totalAmt > 0 ? totalAmt * 0.85 : 0);
+                    const intAmt = payment.interestDue ?? (totalAmt > 0 ? totalAmt * 0.15 : 0);
+                    const paidAmt = payment.amountPaid ?? 0;
+                    const itemKey = payment.paymentId ?? payment.scheduleId ?? idx;
+
                     return (
                       <motion.tr
-                        key={payment.paymentId}
+                        key={itemKey}
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.2, delay: idx * 0.03 }}
@@ -287,22 +314,22 @@ export default function LoansPage() {
                         }`}
                       >
                         <td className="py-3 px-4 font-semibold whitespace-nowrap">
-                          #{payment.installmentNumber}
+                          #{instNumber}
                         </td>
                         <td className="py-3 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                           {formatDate(payment.dueDate)}
                         </td>
                         <td className="py-3 px-4 text-slate-800 dark:text-slate-200 whitespace-nowrap">
-                          {formatCurrency(payment.principalDue)}
+                          {formatCurrency(prinAmt, scheduleDetail.currency)}
                         </td>
                         <td className="py-3 px-4 text-slate-800 dark:text-slate-200 whitespace-nowrap">
-                          {formatCurrency(payment.interestDue)}
+                          {formatCurrency(intAmt, scheduleDetail.currency)}
                         </td>
                         <td className="py-3 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
-                          {formatCurrency(payment.totalDue)}
+                          {formatCurrency(totalAmt, scheduleDetail.currency)}
                         </td>
                         <td className="py-3 px-4 font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
-                          {formatCurrency(payment.amountPaid)}
+                          {formatCurrency(paidAmt, scheduleDetail.currency)}
                         </td>
                         <td className="py-3 px-4 whitespace-nowrap">
                           <StatusBadge status={payment.paymentStatus} />
@@ -316,7 +343,7 @@ export default function LoansPage() {
                             <Button
                               size="sm"
                               variant="emerald"
-                              onClick={() => handlePayInstallmentDirectly(payment)}
+                              onClick={() => handlePayInstallmentDirectly(payment, idx)}
                               className="h-7 text-xs px-2.5"
                             >
                               Pay Now
