@@ -64,7 +64,6 @@ import { toast } from "sonner";
 import { GsapCreditGauge } from "@/components/ui/gsap-gauge";
 import { BaseProgressBar } from "@/components/ui/base-progress";
 import { InfoTooltip } from "@/components/ui/tooltip";
-import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<ApplicationResponse[]>([]);

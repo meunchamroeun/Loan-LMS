@@ -24,7 +24,6 @@ import { BaseLoanSlider } from "@/components/ui/base-slider";
 import { BaseProgressBar } from "@/components/ui/base-progress";
 import { BaseAccordionGroup } from "@/components/ui/base-accordion";
 import { InfoTooltip } from "@/components/ui/tooltip";
-import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
 import { AnimateTiltCard, AnimateShimmerText, AnimateShine } from "@/components/ui/animate-ui-suite";
 import {
   Dialog,

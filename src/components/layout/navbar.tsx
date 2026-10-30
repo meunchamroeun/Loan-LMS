@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { usePWA } from "@/components/pwa/pwa-provider";
-import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
 import { api } from "@/lib/api-client";
 import { NotificationResponse } from "@/types/api";
 import { Button } from "@/components/ui/button";
@@ -147,11 +146,6 @@ export function Navbar({ onOpenMenu }: NavbarProps) {
           <Building2 className="h-3 w-3 text-blue-500" />
           <span>HQ Branch #001</span>
         </Badge>
-
-        {/* System Architecture Popover (visible on xl+ screens) */}
-        <div className="hidden xl:block shrink-0">
-          <TechBadgeShowcase />
-        </div>
 
         {/* Staff Sign In Quick Link (visible on xl+ screens) */}
         <Link
