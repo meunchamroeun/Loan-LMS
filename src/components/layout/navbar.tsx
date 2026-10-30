@@ -48,9 +48,13 @@ export function Navbar({ onOpenMenu }: NavbarProps) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    }
+    const syncTheme = () => {
+      if (typeof window !== "undefined") {
+        setIsDark(document.documentElement.classList.contains("dark"));
+      }
+    };
+    syncTheme();
+    window.addEventListener("themechange", syncTheme);
 
     const fetchNotifications = async () => {
       try {
@@ -59,16 +63,21 @@ export function Navbar({ onOpenMenu }: NavbarProps) {
       } catch {}
     };
     fetchNotifications();
+
+    return () => window.removeEventListener("themechange", syncTheme);
   }, []);
 
   const toggleTheme = () => {
-    const nextDark = !isDark;
+    const nextDark = !document.documentElement.classList.contains("dark");
     setIsDark(nextDark);
     if (nextDark) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("lms_theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("lms_theme", "light");
     }
+    window.dispatchEvent(new Event("themechange"));
   };
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;

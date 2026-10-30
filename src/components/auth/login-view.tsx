@@ -89,19 +89,27 @@ export function LoginView() {
   const t = I18N[lang];
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    }
+    const syncTheme = () => {
+      if (typeof window !== "undefined") {
+        setIsDark(document.documentElement.classList.contains("dark"));
+      }
+    };
+    syncTheme();
+    window.addEventListener("themechange", syncTheme);
+    return () => window.removeEventListener("themechange", syncTheme);
   }, []);
 
   const toggleTheme = () => {
-    const nextDark = !isDark;
+    const nextDark = !document.documentElement.classList.contains("dark");
     setIsDark(nextDark);
     if (nextDark) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("lms_theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("lms_theme", "light");
     }
+    window.dispatchEvent(new Event("themechange"));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
