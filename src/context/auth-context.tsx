@@ -46,10 +46,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const saved = api.getSavedUser();
 
       if (token) {
-        if (token === "mock-jwt-token-lms-super-admin" && saved) {
+        if (!demo && token === "mock-jwt-token-lms-super-admin") {
+          api.clearAuth();
+          setUser(null);
+        } else if (token === "mock-jwt-token-lms-super-admin" && saved && demo) {
           setUser(saved as UserResponse);
         } else {
-          await refreshProfile();
+          try {
+            await refreshProfile();
+          } catch {
+            api.clearAuth();
+            setUser(null);
+          }
         }
       } else {
         setUser(null);

@@ -68,10 +68,10 @@ export class ApiClient {
   }
 
   public isDemoMode(): boolean {
-    if (typeof window === "undefined") return true;
+    if (typeof window === "undefined") return false;
     const item = localStorage.getItem(this.demoModeKey);
-    // Default to true if not explicitly set, ensuring immediate working UI
-    if (item === null) return true;
+    // Default to false (connect directly to live backend)
+    if (item === null) return false;
     return item === "true";
   }
 
@@ -124,10 +124,12 @@ export class ApiClient {
     options: RequestInit = {},
     mockFallback?: T
   ): Promise<T> {
-    if (this.isDemoMode() && mockFallback !== undefined) {
-      // Simulate micro-latency for realistic UI animations
-      await new Promise((resolve) => setTimeout(resolve, 180));
-      return mockFallback;
+    // In Demo Mode, use local mock simulation data
+    if (this.isDemoMode()) {
+      if (mockFallback !== undefined) {
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        return mockFallback;
+      }
     }
 
     const token = this.getAccessToken();
@@ -160,10 +162,15 @@ export class ApiClient {
             const json = await retryRes.json();
             return (json.data !== undefined ? json.data : json) as T;
           }
-        } else {
+        }
+        this.clearAuth();
+        throw new Error("Session expired. Please log in again.");
+      }
+
+      if (response.status === 403 && !endpoint.includes("/auth/")) {
+        if (!token) {
           this.clearAuth();
-          if (mockFallback !== undefined) return mockFallback;
-          throw new Error("Session expired. Please log in again.");
+          throw new Error("Authentication required. Please log in.");
         }
       }
 
@@ -179,20 +186,12 @@ export class ApiClient {
         } catch {
           // ignore parsing error
         }
-        if (mockFallback !== undefined) {
-          console.debug(`API call to ${endpoint} failed (${errMessage}), falling back to mock data.`);
-          return mockFallback;
-        }
         throw new Error(errMessage);
       }
 
       const json = await response.json();
       return (json.data !== undefined ? json.data : json) as T;
     } catch (err: any) {
-      if (mockFallback !== undefined) {
-        console.debug(`API call error on ${endpoint}: ${err.message}. Using mock fallback.`);
-        return mockFallback;
-      }
       throw err;
     }
   }
@@ -224,17 +223,8 @@ export class ApiClient {
   // --- Auth APIs ---
   public auth = {
     login: async (username: string, password: string): Promise<AuthResponse> => {
-      const lowerUser = username.toLowerCase();
-      const isDemoUser =
-        this.isDemoMode() ||
-        lowerUser === "admin" ||
-        lowerUser === "demo" ||
-        lowerUser.includes("demo") ||
-        lowerUser === "officer" ||
-        lowerUser === "cashier";
-
-      // If demo mode is active or user enters demo credentials
-      if (isDemoUser) {
+      // In Demo Mode: authenticate locally with sandbox mock session
+      if (this.isDemoMode()) {
         const demoAuth: AuthResponse = {
           accessToken: "mock-jwt-token-lms-super-admin",
           refreshToken: "mock-refresh-token",
@@ -258,6 +248,7 @@ export class ApiClient {
         return demoAuth;
       }
 
+      // In Production Mode: authenticate directly against live backend API
       const res = await fetch(`${this.baseUrl}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
