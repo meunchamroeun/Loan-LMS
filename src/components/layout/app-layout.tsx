@@ -10,14 +10,14 @@ import { AppLoader } from "@/components/ui/app-loader";
 import { Toaster } from "sonner";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, isDemoMode } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   if (isLoading) {
     return <AppLoader label="Initializing Loan-LMS" />;
   }
 
-  if (!isAuthenticated && !isDemoMode) {
+  if (!isAuthenticated) {
     return (
       <>
         <LoginView />

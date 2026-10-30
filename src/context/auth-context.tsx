@@ -43,21 +43,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsDemoMode(demo);
 
       const token = api.getAccessToken();
-      if (token && token !== "mock-jwt-token-lms-super-admin") {
-        await refreshProfile();
+      const saved = api.getSavedUser();
+
+      if (token) {
+        if (token === "mock-jwt-token-lms-super-admin" && saved) {
+          setUser(saved as UserResponse);
+        } else {
+          await refreshProfile();
+        }
       } else {
-        // Auto-initialize demo/guest profile
-        setUser({
-          userId: 1,
-          username: "admin_demo",
-          email: "demo@loanlms.com",
-          firstName: "Executive",
-          lastName: "Admin",
-          role: "ROLE_ADMIN",
-          status: "ACTIVE",
-          phoneNumber: "+855 12 345 678",
-          createdAt: "2026-01-01T00:00:00Z",
-        });
+        setUser(null);
       }
       setIsLoading(false);
     };
@@ -89,8 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await api.auth.logout();
       setUser(null);
-      setIsDemoMode(false);
-      api.setDemoMode(false);
+      api.clearAuth();
       toast.info("Logged out successfully");
     } finally {
       setIsLoading(false);
@@ -101,25 +95,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const nextVal = enabled !== undefined ? enabled : !isDemoMode;
     api.setDemoMode(nextVal);
     setIsDemoMode(nextVal);
+
     if (nextVal) {
-      setUser({
-        userId: 1,
-        username: "admin_demo",
-        email: "demo@loanlms.com",
-        firstName: "Executive",
-        lastName: "Admin",
-        role: "ROLE_ADMIN",
-        status: "ACTIVE",
-        phoneNumber: "+855 12 345 678",
-        createdAt: "2026-01-01T00:00:00Z",
-      });
-      toast.success("Demo Mode Activated", {
-        description: "Exploring LMS with rich mock data and interactive features.",
+      toast.info("Switched to Demo / Mock Sandbox", {
+        description: "API calls will use sample demonstration data.",
       });
     } else {
-      api.clearAuth();
-      setUser(null);
-      toast.info("Switched to Live Backend Mode", {
+      toast.info("Switched to Production Server", {
         description: "Connecting directly to https://loan.cavkim.tech",
       });
     }
@@ -129,7 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user || !!api.getAccessToken(),
+        isAuthenticated: !!user,
         isLoading,
         isDemoMode,
         login,

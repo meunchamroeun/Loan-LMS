@@ -491,16 +491,18 @@ export function LoginView() {
               </div>
             </div>
 
-            {/* Return Link to Dashboard */}
-            <div className="mt-6 text-center">
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-              >
-                <ArrowLeft className="size-3.5" />
-                <span>{t.backToDashboard}</span>
-              </Link>
-            </div>
+            {/* Return Link to Dashboard (only shown if session is active) */}
+            {user && (
+              <div className="mt-6 text-center">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                >
+                  <ArrowLeft className="size-3.5" />
+                  <span>{t.backToDashboard}</span>
+                </Link>
+              </div>
+            )}
           </div>
         </main>
       </div>
