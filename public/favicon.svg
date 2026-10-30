@@ -1,0 +1,32 @@
+
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1.28" stdDeviation="1.92" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="14.08" fill="url(#bg)" filter="url(#shadow)" />
+
+  <!-- Card / Banknote symbol -->
+  <g transform="translate(6.4, 6.4)">
+    <rect x="5.120000000000001" y="10.240000000000002" width="40.96000000000001" height="30.72" rx="4.096" fill="#ffffff" opacity="0.95" />
+    <!-- Magnetic strip / header bar -->
+    <rect x="5.120000000000001" y="16.384" width="40.96000000000001" height="6.144" fill="#1e293b" />
+    <!-- Gold chip -->
+    <rect x="10.240000000000002" y="26.624000000000002" width="9.216" height="7.68" rx="1.536" fill="url(#gold)" />
+    <!-- Embossed lines -->
+    <rect x="22.528000000000002" y="27.648000000000003" width="19.456000000000003" height="2.048" rx="1.024" fill="#64748b" opacity="0.5" />
+    <rect x="22.528000000000002" y="31.744" width="12.8" height="2.048" rx="1.024" fill="#64748b" opacity="0.5" />
+  </g>
+</svg>

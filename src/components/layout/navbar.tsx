@@ -10,8 +10,11 @@ import {
   Moon,
   Sun,
   Laptop,
+  Download,
+  WifiOff,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { usePWA } from "@/components/pwa/pwa-provider";
 import { api } from "@/lib/api-client";
 import { NotificationResponse } from "@/types/api";
 import { Button } from "@/components/ui/button";
@@ -29,6 +32,7 @@ import { toast } from "sonner";
 
 export function Navbar() {
   const { user, isDemoMode, toggleDemoMode, logout } = useAuth();
+  const { isInstallable, installPwa, isOnline } = usePWA();
   const [notifications, setNotifications] = useState<NotificationResponse[]>([]);
   const [isDark, setIsDark] = useState(false);
 
@@ -83,6 +87,23 @@ export function Navbar() {
 
       {/* Right Controls */}
       <div className="flex items-center gap-3 ml-auto">
+        {!isOnline && (
+          <Badge variant="warning" className="gap-1 text-[11px] h-7 px-2.5">
+            <WifiOff className="h-3 w-3" /> Offline Mode
+          </Badge>
+        )}
+
+        {isInstallable && (
+          <Button
+            size="sm"
+            onClick={installPwa}
+            className="h-8 text-xs gap-1.5 bg-blue-600 hover:bg-blue-500 shadow-sm"
+          >
+            <Download className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Install App</span>
+          </Button>
+        )}
+
         {/* Demo Mode Toggle */}
         <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-xs">
           <span className="text-slate-500 dark:text-slate-400 font-medium">Demo Mode</span>
