@@ -1,0 +1,285 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { AppLayout } from "@/components/layout/app-layout";
+import { api } from "@/lib/api-client";
+import { LoanReportResponse, PaymentReportResponse } from "@/types/api";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button, AnimatedButton } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  BarChart3,
+  Download,
+  Search,
+  Filter,
+  Printer,
+  FileSpreadsheet,
+  Calendar,
+  CreditCard,
+  DollarSign,
+  TrendingUp,
+} from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { toast } from "sonner";
+
+export default function ReportsPage() {
+  const [loans, setLoans] = useState<LoanReportResponse[]>([]);
+  const [payments, setPayments] = useState<PaymentReportResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Search
+  const [loanSearch, setLoanSearch] = useState("");
+  const [paymentSearch, setPaymentSearch] = useState("");
+
+  const loadReports = async () => {
+    setLoading(true);
+    try {
+      const [loansData, paymentsData] = await Promise.all([
+        api.reports.getLoans(),
+        api.reports.getPayments(),
+      ]);
+      setLoans(loansData);
+      setPayments(paymentsData);
+    } catch (err: any) {
+      toast.error("Failed to load reports", { description: err.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadReports();
+  }, []);
+
+  const exportLoansCSV = () => {
+    const headers = "Loan Number,Customer Name,Approved Amount,Outstanding Balance,Status,Start Date,End Date\n";
+    const rows = loans
+      .map(
+        (l) =>
+          `"${l.loanNumber}","${l.customerName}",${l.approvedAmount},${l.outstandingBalance},"${l.loanStatus}","${l.startDate}","${l.endDate}"`
+      )
+      .join("\n");
+    const blob = new Blob([headers + rows], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `loans_report_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Loans Report Exported to CSV");
+  };
+
+  const exportPaymentsCSV = () => {
+    const headers = "Payment ID,Loan Number,Due Date,Amount Due,Amount Paid,Status,Payment Date\n";
+    const rows = payments
+      .map(
+        (p) =>
+          `"${p.paymentId}","${p.loanNumber}","${p.dueDate}",${p.amountDue},${p.amountPaid},"${p.paymentStatus}","${p.paymentDate || ""}"`
+      )
+      .join("\n");
+    const blob = new Blob([headers + rows], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `payments_report_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Payments Report Exported to CSV");
+  };
+
+  const filteredLoans = loans.filter(
+    (l) =>
+      l.loanNumber.toLowerCase().includes(loanSearch.toLowerCase()) ||
+      l.customerName.toLowerCase().includes(loanSearch.toLowerCase())
+  );
+
+  const filteredPayments = payments.filter((p) =>
+    p.loanNumber.toLowerCase().includes(paymentSearch.toLowerCase())
+  );
+
+  return (
+    <AppLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Financial Reports & Auditing
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Generate regulatory portfolio reports, export audit CSV sheets, and inspect cash flows.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => window.print()}
+              className="gap-2 text-xs"
+            >
+              <Printer className="h-4 w-4" />
+              Print
+            </Button>
+          </div>
+        </div>
+
+        {/* Tabs for Loans Report vs Payments Report */}
+        <Tabs defaultValue="loans">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 dark:border-slate-800 pb-3">
+            <TabsList className="text-xs">
+              <TabsTrigger value="loans">Loan Portfolio Report</TabsTrigger>
+              <TabsTrigger value="payments">Repayments Inflow Report</TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Tab 1: Loans Report */}
+          <TabsContent value="loans" className="space-y-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="relative flex-1 max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search by Loan # or Customer..."
+                  value={loanSearch}
+                  onChange={(e) => setLoanSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 text-xs bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <AnimatedButton
+                onClick={exportLoansCSV}
+                className="gap-2 text-xs"
+              >
+                <Download className="h-4 w-4" />
+                Export Loans CSV
+              </AnimatedButton>
+            </div>
+
+            <Card className="border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 dark:bg-slate-900/60 text-slate-500 font-semibold border-b border-slate-200/80 dark:border-slate-800">
+                    <tr>
+                      <th className="py-3 px-4">Loan Number</th>
+                      <th className="py-3 px-4">Customer Name</th>
+                      <th className="py-3 px-4">Approved Amount</th>
+                      <th className="py-3 px-4">Outstanding Balance</th>
+                      <th className="py-3 px-4">Status</th>
+                      <th className="py-3 px-4">Start Date</th>
+                      <th className="py-3 px-4">Maturity Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {filteredLoans.map((loan) => (
+                      <tr
+                        key={loan.loanId}
+                        className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                      >
+                        <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                          {loan.loanNumber}
+                        </td>
+                        <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-slate-100">
+                          {loan.customerName}
+                        </td>
+                        <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
+                          {formatCurrency(loan.approvedAmount)}
+                        </td>
+                        <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                          {formatCurrency(loan.outstandingBalance)}
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <Badge variant={loan.loanStatus === "ACTIVE" ? "success" : "secondary"}>
+                            {loan.loanStatus}
+                          </Badge>
+                        </td>
+                        <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.startDate)}</td>
+                        <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.endDate)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Tab 2: Payments Report */}
+          <TabsContent value="payments" className="space-y-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="relative flex-1 max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search by Loan #..."
+                  value={paymentSearch}
+                  onChange={(e) => setPaymentSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 text-xs bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <AnimatedButton
+                onClick={exportPaymentsCSV}
+                className="gap-2 text-xs"
+              >
+                <Download className="h-4 w-4" />
+                Export Payments CSV
+              </AnimatedButton>
+            </div>
+
+            <Card className="border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 dark:bg-slate-900/60 text-slate-500 font-semibold border-b border-slate-200/80 dark:border-slate-800">
+                    <tr>
+                      <th className="py-3 px-4">Payment ID</th>
+                      <th className="py-3 px-4">Loan Number</th>
+                      <th className="py-3 px-4">Due Date</th>
+                      <th className="py-3 px-4">Amount Due</th>
+                      <th className="py-3 px-4">Amount Paid</th>
+                      <th className="py-3 px-4">Status</th>
+                      <th className="py-3 px-4">Payment Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {filteredPayments.map((p) => {
+                      const isPaid = p.paymentStatus === "PAID";
+                      return (
+                        <tr
+                          key={p.paymentId}
+                          className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                        >
+                          <td className="py-3.5 px-4 font-mono text-slate-400">
+                            #{p.paymentId}
+                          </td>
+                          <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                            {p.loanNumber}
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">
+                            {formatDate(p.dueDate)}
+                          </td>
+                          <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                            {formatCurrency(p.amountDue)}
+                          </td>
+                          <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                            {formatCurrency(p.amountPaid)}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <Badge variant={isPaid ? "success" : "warning"}>
+                              {p.paymentStatus}
+                            </Badge>
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-500">
+                            {formatDate(p.paymentDate) || "-"}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </AppLayout>
+  );
+}
