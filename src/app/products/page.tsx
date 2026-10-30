@@ -159,33 +159,33 @@ export default function LoanProductsPage() {
                       {product.description || "Comprehensive credit facility tailored for retail or agricultural borrowers."}
                     </p>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 text-xs">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 text-xs border border-slate-100 dark:border-slate-800/60">
                       <div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-[11px] text-slate-400">Interest (APR)</span>
+                        <div className="flex items-center gap-1 text-[11px] text-slate-400">
+                          <span>Interest (APR)</span>
                           <InfoTooltip content="Annual Percentage Rate calculated on declining balance.">
                             <span className="text-slate-400 text-[10px] cursor-pointer">ⓘ</span>
                           </InfoTooltip>
                         </div>
-                        <div className="text-base font-bold text-blue-600 dark:text-blue-400">
+                        <div className="text-base font-bold text-blue-600 dark:text-blue-400 mt-0.5">
                           {product.interestRate}%
                         </div>
                       </div>
                       <div>
                         <span className="text-[11px] text-slate-400">Max Facility</span>
-                        <div className="text-base font-bold text-slate-900 dark:text-white">
+                        <div className="text-base font-bold text-slate-900 dark:text-white mt-0.5 whitespace-nowrap">
                           {formatCurrency(product.maxLoanAmount)}
                         </div>
                       </div>
-                      <div>
+                      <div className="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
                         <span className="text-[11px] text-slate-400">Min Income</span>
-                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5 whitespace-nowrap">
                           {formatCurrency(product.minimumIncome)}
                         </div>
                       </div>
-                      <div>
+                      <div className="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
                         <span className="text-[11px] text-slate-400">Tenure Range</span>
-                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
+                        <div className="text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5 whitespace-nowrap">
                           {product.minimumTermMonths} - {product.maximumTermMonths} Mo
                         </div>
                       </div>

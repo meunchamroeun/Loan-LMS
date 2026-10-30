@@ -388,25 +388,25 @@ export default function ApplicationsPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800">
                   <div>
                     <span className="text-[11px] text-slate-400">Requested Capital</span>
-                    <div className="text-base font-bold text-slate-900 dark:text-white">
+                    <div className="text-base font-bold text-slate-900 dark:text-white whitespace-nowrap">
                       {formatCurrency(selectedApp.requestedAmount)}
                     </div>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-400">Term Duration</span>
-                    <div className="text-base font-bold text-slate-900 dark:text-white">
+                    <div className="text-base font-bold text-slate-900 dark:text-white whitespace-nowrap">
                       {selectedApp.requestedTermMonths} Months
                     </div>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-400">Submission Date</span>
-                    <div className="text-xs font-semibold text-slate-900 dark:text-white mt-1">
+                    <div className="text-xs font-semibold text-slate-900 dark:text-white mt-1 whitespace-nowrap">
                       {formatDate(selectedApp.submittedAt || selectedApp.createdAt)}
                     </div>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-400">Facility ID</span>
-                    <div className="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1">
+                    <div className="text-xs font-mono text-blue-600 dark:text-blue-400 mt-1 whitespace-nowrap">
                       #{selectedApp.applicationId}
                     </div>
                   </div>
