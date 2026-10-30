@@ -281,17 +281,17 @@ export default function ApplicationsPage() {
         {/* Applications Table Card */}
         <Card className="border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[850px]">
               <thead className="bg-slate-50 dark:bg-slate-900/60 text-slate-500 font-semibold border-b border-slate-200/80 dark:border-slate-800">
                 <tr>
-                  <th className="py-3 px-4">Application #</th>
-                  <th className="py-3 px-4">Applicant</th>
-                  <th className="py-3 px-4">Product</th>
-                  <th className="py-3 px-4">Requested</th>
-                  <th className="py-3 px-4">Duration</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Created Date</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Application #</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Applicant</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Product</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Requested</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Duration</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Created Date</th>
+                  <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -312,36 +312,36 @@ export default function ApplicationsPage() {
                       transition={{ duration: 0.25, delay: idx * 0.04 }}
                       className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                     >
-                      <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                      <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">
                         {app.applicationNumber}
                       </td>
-                      <td className="py-3.5 px-4">
-                        <div className="font-semibold text-slate-900 dark:text-slate-100">
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <div className="font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
                           {app.customerName || `Customer #${app.customerId}`}
                         </div>
-                        <div className="text-[11px] text-slate-400 truncate max-w-xs">
+                        <div className="text-[11px] text-slate-400 truncate max-w-xs whitespace-nowrap">
                           {app.loanPurpose}
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
+                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">
                         {app.productName || "Standard Facility"}
                       </td>
-                      <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
+                      <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
                         {formatCurrency(app.requestedAmount)}
                       </td>
-                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">
+                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                         {app.requestedTermMonths} Months
                       </td>
-                      <td className="py-3.5 px-4">{getStatusBadge(app.applicationStatus)}</td>
-                      <td className="py-3.5 px-4 text-slate-500">
+                      <td className="py-3.5 px-4 whitespace-nowrap">{getStatusBadge(app.applicationStatus)}</td>
+                      <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
                         {formatDate(app.createdAt || app.submittedAt)}
                       </td>
-                      <td className="py-3.5 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => openApplicationDetail(app)}
-                          className="h-8 gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:border-blue-300"
+                          className="h-8 gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:border-blue-300 whitespace-nowrap"
                         >
                           <Eye className="h-3.5 w-3.5" />
                           Inspect & Decide

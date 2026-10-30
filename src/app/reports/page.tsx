@@ -161,16 +161,16 @@ export default function ReportsPage() {
 
             <Card className="border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full text-left text-xs min-w-[780px]">
                   <thead className="bg-slate-50 dark:bg-slate-900/60 text-slate-500 font-semibold border-b border-slate-200/80 dark:border-slate-800">
                     <tr>
-                      <th className="py-3 px-4">Loan Number</th>
-                      <th className="py-3 px-4">Customer Name</th>
-                      <th className="py-3 px-4">Approved Amount</th>
-                      <th className="py-3 px-4">Outstanding Balance</th>
-                      <th className="py-3 px-4">Status</th>
-                      <th className="py-3 px-4">Start Date</th>
-                      <th className="py-3 px-4">Maturity Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Loan Number</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Customer Name</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Approved Amount</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Outstanding Balance</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Start Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Maturity Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -185,23 +185,23 @@ export default function ReportsPage() {
                           transition={{ duration: 0.2, delay: idx * 0.03 }}
                           className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                         >
-                          <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                          <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">
                             {loan.loanNumber}
                           </td>
-                          <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-slate-100">
+                          <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
                             {loan.customerName}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
+                          <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
                             {formatCurrency(loan.approvedAmount)}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                          <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                             {formatCurrency(loan.outstandingBalance)}
                           </td>
-                          <td className="py-3.5 px-4">
+                          <td className="py-3.5 px-4 whitespace-nowrap">
                             <StatusBadge status={loan.loanStatus} />
                           </td>
-                          <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.startDate)}</td>
-                          <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.endDate)}</td>
+                          <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">{formatDate(loan.startDate)}</td>
+                          <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">{formatDate(loan.endDate)}</td>
                         </motion.tr>
                       ))
                     )}
@@ -235,16 +235,16 @@ export default function ReportsPage() {
 
             <Card className="border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full text-left text-xs min-w-[760px]">
                   <thead className="bg-slate-50 dark:bg-slate-900/60 text-slate-500 font-semibold border-b border-slate-200/80 dark:border-slate-800">
                     <tr>
-                      <th className="py-3 px-4">Payment ID</th>
-                      <th className="py-3 px-4">Loan Number</th>
-                      <th className="py-3 px-4">Due Date</th>
-                      <th className="py-3 px-4">Amount Due</th>
-                      <th className="py-3 px-4">Amount Paid</th>
-                      <th className="py-3 px-4">Status</th>
-                      <th className="py-3 px-4">Payment Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Payment ID</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Loan Number</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Due Date</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Amount Due</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Amount Paid</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Payment Date</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -261,25 +261,25 @@ export default function ReportsPage() {
                             transition={{ duration: 0.2, delay: idx * 0.03 }}
                             className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
                           >
-                            <td className="py-3.5 px-4 font-mono text-slate-400">
+                            <td className="py-3.5 px-4 font-mono text-slate-400 whitespace-nowrap">
                               #{p.paymentId}
                             </td>
-                            <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                            <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">
                               {p.loanNumber}
                             </td>
-                            <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">
+                            <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                               {formatDate(p.dueDate)}
                             </td>
-                            <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                            <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white whitespace-nowrap">
                               {formatCurrency(p.amountDue)}
                             </td>
-                            <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                            <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                               {formatCurrency(p.amountPaid)}
                             </td>
-                            <td className="py-3.5 px-4">
+                            <td className="py-3.5 px-4 whitespace-nowrap">
                               <StatusBadge status={p.paymentStatus} />
                             </td>
-                            <td className="py-3.5 px-4 text-slate-500">
+                            <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
                               {formatDate(p.paymentDate) || "-"}
                             </td>
                           </motion.tr>

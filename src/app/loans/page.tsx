@@ -257,17 +257,17 @@ export default function LoansPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[760px]">
                 <thead className="bg-slate-50 dark:bg-slate-900/60 text-slate-500 font-semibold border-b border-slate-200/80 dark:border-slate-800">
                   <tr>
-                    <th className="py-3 px-4">Installment #</th>
-                    <th className="py-3 px-4">Due Date</th>
-                    <th className="py-3 px-4">Principal Due</th>
-                    <th className="py-3 px-4">Interest Due</th>
-                    <th className="py-3 px-4">Total Installment</th>
-                    <th className="py-3 px-4">Paid Amount</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Settlement</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Installment #</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Due Date</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Principal Due</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Interest Due</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Total Installment</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Paid Amount</th>
+                    <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                    <th className="py-3 px-4 text-right whitespace-nowrap">Settlement</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -286,28 +286,28 @@ export default function LoansPage() {
                           isPaid ? "bg-emerald-50/20 dark:bg-emerald-950/10" : ""
                         }`}
                       >
-                        <td className="py-3 px-4 font-semibold">
+                        <td className="py-3 px-4 font-semibold whitespace-nowrap">
                           #{payment.installmentNumber}
                         </td>
-                        <td className="py-3 px-4 text-slate-600 dark:text-slate-400">
+                        <td className="py-3 px-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                           {formatDate(payment.dueDate)}
                         </td>
-                        <td className="py-3 px-4 text-slate-800 dark:text-slate-200">
+                        <td className="py-3 px-4 text-slate-800 dark:text-slate-200 whitespace-nowrap">
                           {formatCurrency(payment.principalDue)}
                         </td>
-                        <td className="py-3 px-4 text-slate-800 dark:text-slate-200">
+                        <td className="py-3 px-4 text-slate-800 dark:text-slate-200 whitespace-nowrap">
                           {formatCurrency(payment.interestDue)}
                         </td>
-                        <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">
+                        <td className="py-3 px-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
                           {formatCurrency(payment.totalDue)}
                         </td>
-                        <td className="py-3 px-4 font-semibold text-emerald-600 dark:text-emerald-400">
+                        <td className="py-3 px-4 font-semibold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                           {formatCurrency(payment.amountPaid)}
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 px-4 whitespace-nowrap">
                           <StatusBadge status={payment.paymentStatus} />
                         </td>
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-3 px-4 text-right whitespace-nowrap">
                           {isPaid ? (
                             <span className="text-[11px] text-slate-400 flex items-center justify-end gap-1">
                               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Settled

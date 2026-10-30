@@ -163,7 +163,7 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-colors shadow-2xs select-none",
+        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-colors shadow-2xs select-none whitespace-nowrap shrink-0",
         config.pillClass,
         className
       )}
@@ -175,7 +175,7 @@ export function StatusBadge({
           config.animatePulse ? "animate-pulse" : ""
         )}
       />
-      <span>{config.label}</span>
+      <span className="whitespace-nowrap">{config.label}</span>
     </span>
   );
 }
