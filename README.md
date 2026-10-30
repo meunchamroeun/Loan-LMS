@@ -9,6 +9,7 @@ A modern, enterprise-grade Frontend UI for the Loan Management System (LMS) buil
 [![Base UI](https://img.shields.io/badge/Base_UI-1.9.0-6366f1.svg)](https://base-ui.com/)
 [![Motion](https://img.shields.io/badge/Motion-Dev-f43f5e.svg)](https://motion.dev/)
 [![GSAP](https://img.shields.io/badge/GSAP-3.14-88ce02.svg)](https://gsap.com/)
+[![PWA](https://img.shields.io/badge/PWA-Ready-blueviolet.svg)](https://web.dev/progressive-web-apps/)
 
 ---
 
@@ -100,6 +101,12 @@ Next.js configured with server-side proxy rewrites (`/backend-api/:path*` ➔ `h
 - Tabbed reports for **Loans Portfolio** and **Payments Inflow**.
 - One-click **Export to CSV** for spreadsheets and audits.
 - Printable statements.
+
+### 8. Progressive Web App (PWA) Capabilities
+- **Installable Standalone App**: One-click install prompt on Chrome, Edge, Safari, iOS, and Android.
+- **Service Worker Caching**: Offline asset precaching (`public/sw.js`) with cache-first and stale-while-revalidate strategies.
+- **App Shortcuts**: Quick launch into Applications, Customers, and Loan Schedules directly from device home screen or app dock.
+- **Network Status Detection**: Real-time toast notifications when network goes offline or reconnects to the live gateway.
 
 ---
 
