@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SkeletonCatalogCard } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GsapCounter } from "@/components/ui/gsap-counter";
@@ -212,7 +213,12 @@ export default function CustomersPage() {
 
         {/* Customer Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredCustomers.map((customer, idx) => (
+          {loading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCatalogCard key={i} />
+            ))
+          ) : (
+            filteredCustomers.map((customer, idx) => (
             <motion.div
               key={customer.customerId}
               initial={{ opacity: 0, y: 15 }}
@@ -277,7 +283,8 @@ export default function CustomersPage() {
                 </div>
               </Card>
             </motion.div>
-          ))}
+          ))
+        )}
         </div>
       </div>
 

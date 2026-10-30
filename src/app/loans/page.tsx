@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SkeletonCatalogCard, SkeletonTableRows } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BaseProgressBar } from "@/components/ui/base-progress";
@@ -171,50 +172,56 @@ export default function LoansPage() {
 
         {/* Active Loan Facilities Selector */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {schedules.map((item, idx) => {
-            const isSelected = item.loanId === selectedLoanId;
-            return (
-              <motion.div
-                key={item.loanId}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: idx * 0.05 }}
-                whileHover={{ y: -3 }}
-                onClick={() => setSelectedLoanId(item.loanId)}
-                className={`p-4 rounded-xl border transition-all cursor-pointer ${
-                  isSelected
-                    ? "border-blue-600 bg-blue-50/40 dark:bg-blue-950/20 shadow-md ring-2 ring-blue-500/20"
-                    : "border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md"
-                }`}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400">
-                    {item.loanNumber}
-                  </span>
-                  <StatusBadge status={item.status} />
-                </div>
-                <div className="font-semibold text-sm text-slate-900 dark:text-white">
-                  {item.customerName || `Loan #${item.loanId}`}
-                </div>
+          {loading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <SkeletonCatalogCard key={i} />
+            ))
+          ) : (
+            schedules.map((item, idx) => {
+              const isSelected = item.loanId === selectedLoanId;
+              return (
+                <motion.div
+                  key={item.loanId}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, delay: idx * 0.05 }}
+                  whileHover={{ y: -3 }}
+                  onClick={() => setSelectedLoanId(item.loanId)}
+                  className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                    isSelected
+                      ? "border-blue-600 bg-blue-50/40 dark:bg-blue-950/20 shadow-md ring-2 ring-blue-500/20"
+                      : "border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400">
+                      {item.loanNumber}
+                    </span>
+                    <StatusBadge status={item.status} />
+                  </div>
+                  <div className="font-semibold text-sm text-slate-900 dark:text-white">
+                    {item.customerName || `Loan #${item.loanId}`}
+                  </div>
 
-                {/* Base UI Progress bar */}
-                <div className="mt-3">
-                  <BaseProgressBar
-                    value={item.progressPercentage}
-                    label={`Installments: ${item.paidSchedules} of ${item.totalSchedules}`}
-                    indicatorClassName={item.progressPercentage >= 80 ? "bg-emerald-500" : "bg-blue-600"}
-                  />
-                </div>
+                  {/* Base UI Progress bar */}
+                  <div className="mt-3">
+                    <BaseProgressBar
+                      value={item.progressPercentage}
+                      label={`Installments: ${item.paidSchedules} of ${item.totalSchedules}`}
+                      indicatorClassName={item.progressPercentage >= 80 ? "bg-emerald-500" : "bg-blue-600"}
+                    />
+                  </div>
 
-                <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
-                  <span className="text-slate-400">Remaining Bal:</span>
-                  <span className="font-bold text-slate-900 dark:text-white">
-                    {formatCurrency(item.totalRemainingAmount)}
-                  </span>
-                </div>
-              </motion.div>
-            );
-          })}
+                  <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
+                    <span className="text-slate-400">Remaining Bal:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">
+                      {formatCurrency(item.totalRemainingAmount)}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })
+          )}
         </div>
 
         {/* Selected Loan Amortization Schedule Detail Table */}
@@ -264,7 +271,10 @@ export default function LoansPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {scheduleDetail.payments?.map((payment, idx) => {
+                  {loading || !scheduleDetail.payments ? (
+                    <SkeletonTableRows rows={6} columns={8} />
+                  ) : (
+                    scheduleDetail.payments?.map((payment, idx) => {
                     const isPaid = payment.paymentStatus === "PAID";
                     return (
                       <motion.tr
@@ -315,7 +325,8 @@ export default function LoansPage() {
                         </td>
                       </motion.tr>
                     );
-                  })}
+                  })
+                )}
                 </tbody>
               </table>
             </div>

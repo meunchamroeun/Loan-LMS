@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SkeletonTableRows } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -294,7 +295,9 @@ export default function ApplicationsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {filteredApps.length === 0 ? (
+                {loading ? (
+                  <SkeletonTableRows rows={6} columns={8} />
+                ) : filteredApps.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="py-12 text-center text-slate-400 text-sm">
                       No loan applications match your current criteria.

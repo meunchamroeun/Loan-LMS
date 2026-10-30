@@ -6,6 +6,7 @@ import { Sidebar, MobileSidebar } from "./sidebar";
 import { Navbar } from "./navbar";
 import { BottomNav } from "./bottom-nav";
 import { LoginView } from "@/components/auth/login-view";
+import { AppLoader } from "@/components/ui/app-loader";
 import { Toaster } from "sonner";
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -13,14 +14,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm font-medium text-slate-400">Loading Loan-LMS Console...</span>
-        </div>
-      </div>
-    );
+    return <AppLoader label="Initializing Loan-LMS" />;
   }
 
   if (!isAuthenticated && !isDemoMode) {
@@ -33,7 +27,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden max-w-full w-full">
       {/* Desktop Persistent Sidebar */}
       <Sidebar />
 
@@ -43,12 +37,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <div className="flex-1 flex flex-col min-w-0 w-full overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full overflow-hidden">
         {/* Responsive Navbar */}
         <Navbar onOpenMenu={() => setIsMobileMenuOpen(true)} />
 
-        {/* Main Content Area with Bottom Bar clearance on mobile */}
-        <main className="flex-1 p-3.5 sm:p-5 md:p-8 overflow-y-auto w-full pb-24 lg:pb-8">
+        {/* Main Content Area with Bottom Bar clearance on mobile (strict overflow-x containment) */}
+        <main className="flex-1 p-3.5 sm:p-5 md:p-8 overflow-y-auto overflow-x-hidden w-full max-w-full pb-24 lg:pb-8">
           {children}
         </main>
 

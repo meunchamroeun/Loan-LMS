@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SkeletonTableRows, SkeletonKpiCard } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GsapCounter } from "@/components/ui/gsap-counter";
@@ -693,44 +694,48 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {applications.slice(0, 5).map((app, idx) => {
-                  return (
-                    <motion.tr
-                      key={app.applicationId}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25, delay: idx * 0.05 }}
-                      className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
-                    >
-                      <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
-                        {app.applicationNumber}
-                      </td>
-                      <td className="py-3.5 px-4 font-medium text-slate-900 dark:text-slate-100">
-                        {app.customerName || `Customer #${app.customerId}`}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
-                        {app.productName || "Micro Loan"}
-                      </td>
-                      <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
-                        {formatCurrency(app.requestedAmount)}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-500">
-                        {app.requestedTermMonths} Months
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <StatusBadge status={app.applicationStatus} />
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <a
-                          href={`/applications`}
-                          className="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1"
-                        >
-                          Review <ChevronRight className="h-3 w-3" />
-                        </a>
-                      </td>
-                    </motion.tr>
-                  );
-                })}
+                {loading ? (
+                  <SkeletonTableRows rows={5} columns={7} />
+                ) : (
+                  applications.slice(0, 5).map((app, idx) => {
+                    return (
+                      <motion.tr
+                        key={app.applicationId}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25, delay: idx * 0.05 }}
+                        className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                      >
+                        <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                          {app.applicationNumber}
+                        </td>
+                        <td className="py-3.5 px-4 font-medium text-slate-900 dark:text-slate-100">
+                          {app.customerName || `Customer #${app.customerId}`}
+                        </td>
+                        <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
+                          {app.productName || "Micro Loan"}
+                        </td>
+                        <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                          {formatCurrency(app.requestedAmount)}
+                        </td>
+                        <td className="py-3.5 px-4 text-slate-500">
+                          {app.requestedTermMonths} Months
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <StatusBadge status={app.applicationStatus} />
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <a
+                            href={`/applications`}
+                            className="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center gap-1"
+                          >
+                            Review <ChevronRight className="h-3 w-3" />
+                          </a>
+                        </td>
+                      </motion.tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

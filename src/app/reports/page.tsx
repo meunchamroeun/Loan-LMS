@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SkeletonTableRows } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   BarChart3,
@@ -173,33 +174,37 @@ export default function ReportsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    {filteredLoans.map((loan, idx) => (
-                      <motion.tr
-                        key={loan.loanId}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2, delay: idx * 0.03 }}
-                        className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
-                      >
-                        <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
-                          {loan.loanNumber}
-                        </td>
-                        <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-slate-100">
-                          {loan.customerName}
-                        </td>
-                        <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
-                          {formatCurrency(loan.approvedAmount)}
-                        </td>
-                        <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
-                          {formatCurrency(loan.outstandingBalance)}
-                        </td>
-                        <td className="py-3.5 px-4">
-                          <StatusBadge status={loan.loanStatus} />
-                        </td>
-                        <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.startDate)}</td>
-                        <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.endDate)}</td>
-                      </motion.tr>
-                    ))}
+                    {loading ? (
+                      <SkeletonTableRows rows={6} columns={7} />
+                    ) : (
+                      filteredLoans.map((loan, idx) => (
+                        <motion.tr
+                          key={loan.loanId}
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2, delay: idx * 0.03 }}
+                          className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                        >
+                          <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                            {loan.loanNumber}
+                          </td>
+                          <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-slate-100">
+                            {loan.customerName}
+                          </td>
+                          <td className="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
+                            {formatCurrency(loan.approvedAmount)}
+                          </td>
+                          <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                            {formatCurrency(loan.outstandingBalance)}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <StatusBadge status={loan.loanStatus} />
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.startDate)}</td>
+                          <td className="py-3.5 px-4 text-slate-500">{formatDate(loan.endDate)}</td>
+                        </motion.tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -243,40 +248,44 @@ export default function ReportsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    {filteredPayments.map((p, idx) => {
-                      const isPaid = p.paymentStatus === "PAID";
-                      return (
-                        <motion.tr
-                          key={p.paymentId}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.2, delay: idx * 0.03 }}
-                          className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
-                        >
-                          <td className="py-3.5 px-4 font-mono text-slate-400">
-                            #{p.paymentId}
-                          </td>
-                          <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
-                            {p.loanNumber}
-                          </td>
-                          <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">
-                            {formatDate(p.dueDate)}
-                          </td>
-                          <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
-                            {formatCurrency(p.amountDue)}
-                          </td>
-                          <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
-                            {formatCurrency(p.amountPaid)}
-                          </td>
-                          <td className="py-3.5 px-4">
-                            <StatusBadge status={p.paymentStatus} />
-                          </td>
-                          <td className="py-3.5 px-4 text-slate-500">
-                            {formatDate(p.paymentDate) || "-"}
-                          </td>
-                        </motion.tr>
-                      );
-                    })}
+                    {loading ? (
+                      <SkeletonTableRows rows={6} columns={7} />
+                    ) : (
+                      filteredPayments.map((p, idx) => {
+                        const isPaid = p.paymentStatus === "PAID";
+                        return (
+                          <motion.tr
+                            key={p.paymentId}
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2, delay: idx * 0.03 }}
+                            className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                          >
+                            <td className="py-3.5 px-4 font-mono text-slate-400">
+                              #{p.paymentId}
+                            </td>
+                            <td className="py-3.5 px-4 font-mono font-medium text-blue-600 dark:text-blue-400">
+                              {p.loanNumber}
+                            </td>
+                            <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400">
+                              {formatDate(p.dueDate)}
+                            </td>
+                            <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                              {formatCurrency(p.amountDue)}
+                            </td>
+                            <td className="py-3.5 px-4 font-bold text-emerald-600 dark:text-emerald-400">
+                              {formatCurrency(p.amountPaid)}
+                            </td>
+                            <td className="py-3.5 px-4">
+                              <StatusBadge status={p.paymentStatus} />
+                            </td>
+                            <td className="py-3.5 px-4 text-slate-500">
+                              {formatDate(p.paymentDate) || "-"}
+                            </td>
+                          </motion.tr>
+                        );
+                      })
+                    )}
                   </tbody>
                 </table>
               </div>

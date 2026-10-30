@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SkeletonCatalogCard } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BaseToggleSwitch } from "@/components/ui/base-switch";
@@ -120,9 +121,14 @@ export default function LoanProductsPage() {
 
         {/* Product Catalog Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {products.map((product, idx) => {
-            const isActive = product.status === "ACTIVE";
-            return (
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCatalogCard key={i} />
+            ))
+          ) : (
+            products.map((product, idx) => {
+              const isActive = product.status === "ACTIVE";
+              return (
               <motion.div
                 key={product.loanProductId}
                 initial={{ opacity: 0, y: 15 }}
@@ -201,7 +207,8 @@ export default function LoanProductsPage() {
                 </Card>
               </motion.div>
             );
-          })}
+          })
+        )}
         </div>
       </div>
 
