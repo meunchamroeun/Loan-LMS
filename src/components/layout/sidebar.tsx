@@ -81,7 +81,7 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { user, logout, isDemoMode, toggleDemoMode } = useAuth();
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-col h-full overflow-hidden overscroll-none select-none">
       {/* Brand Header */}
       <div className="flex items-center gap-3 px-5 h-14 border-b border-slate-200/80 dark:border-slate-800 shrink-0">
         <div className="h-8 w-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 flex items-center justify-center text-white shadow-md shadow-blue-500/20 shrink-0">
@@ -105,8 +105,8 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
-      {/* Navigation Links (fitted with hidden scrollbars for clean presentation) */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto no-scrollbar">
+      {/* Navigation Links: Strictly non-scrollable (fixed in viewport) */}
+      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-hidden">
         <div className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
           Core Operations
         </div>
@@ -216,7 +216,7 @@ export function Sidebar({ className }: { className?: string }) {
   return (
     <aside
       className={cn(
-        "hidden lg:flex flex-col w-64 border-r border-slate-200/80 bg-white/95 dark:border-slate-800 dark:bg-slate-900/95 backdrop-blur-md h-screen sticky top-0 shrink-0",
+        "hidden lg:flex flex-col w-64 border-r border-slate-200/80 bg-white/95 dark:border-slate-800 dark:bg-slate-900/95 backdrop-blur-md h-screen sticky top-0 shrink-0 overflow-hidden overscroll-none select-none",
         className
       )}
     >
@@ -252,7 +252,7 @@ export function MobileSidebar({
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 250 }}
-            className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col h-full z-10"
+            className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col h-full z-10 overflow-hidden overscroll-none"
           >
             <div className="absolute top-4 right-3 z-20">
               <button
