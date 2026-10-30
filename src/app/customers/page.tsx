@@ -194,12 +194,12 @@ export default function CustomersPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
             {["ALL", "MALE", "FEMALE"].map((gender) => (
               <button
                 key={gender}
                 onClick={() => setGenderFilter(gender)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
                   genderFilter === gender
                     ? "bg-blue-600 text-white shadow-sm"
                     : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
@@ -240,7 +240,7 @@ export default function CustomersPage() {
                         <div className="font-bold text-slate-900 dark:text-white text-sm">
                           {customer.firstName} {customer.lastName}
                         </div>
-                        <span className="text-xs text-slate-400 font-mono">
+                        <span className="text-xs text-slate-400 font-mono whitespace-nowrap">
                           {customer.nationalId}
                         </span>
                       </div>
@@ -251,7 +251,7 @@ export default function CustomersPage() {
                   <div className="space-y-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
                     <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                       <Phone className="h-3.5 w-3.5 text-slate-400" />
-                      <span>{customer.phoneNumber}</span>
+                      <span className="whitespace-nowrap">{customer.phoneNumber}</span>
                     </div>
                     {customer.email && (
                       <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
@@ -269,14 +269,14 @@ export default function CustomersPage() {
                 </div>
 
                 <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-400 whitespace-nowrap">
                     DOB: {formatDate(customer.dateOfBirth)}
                   </span>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => openProfile(customer)}
-                    className="h-8 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700"
+                    className="h-8 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 whitespace-nowrap"
                   >
                     View Profile & Employment
                   </Button>

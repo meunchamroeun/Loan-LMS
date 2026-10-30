@@ -152,7 +152,7 @@ export default function ReportsPage() {
               </div>
               <AnimatedButton
                 onClick={exportLoansCSV}
-                className="gap-2 text-xs"
+                className="gap-2 text-xs whitespace-nowrap"
               >
                 <Download className="h-4 w-4" />
                 Export Loans CSV
@@ -226,7 +226,7 @@ export default function ReportsPage() {
               </div>
               <AnimatedButton
                 onClick={exportPaymentsCSV}
-                className="gap-2 text-xs"
+                className="gap-2 text-xs whitespace-nowrap"
               >
                 <Download className="h-4 w-4" />
                 Export Payments CSV

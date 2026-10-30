@@ -619,10 +619,10 @@ export default function DashboardPage() {
                 Estimated Repayment
               </span>
               <div>
-                <div className="text-3xl font-extrabold text-blue-600 dark:text-blue-400">
+                <div className="text-3xl font-extrabold text-blue-600 dark:text-blue-400 whitespace-nowrap">
                   {formatCurrency(monthlyPayment)}
                 </div>
-                <span className="text-xs text-slate-500">per month ({calcTerm} installments)</span>
+                <span className="text-xs text-slate-500 whitespace-nowrap">per month ({calcTerm} installments)</span>
               </div>
 
               <div className="space-y-2 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs">
@@ -633,15 +633,15 @@ export default function DashboardPage() {
                 />
                 <div className="flex justify-between text-slate-500 pt-1">
                   <span>Total Principal:</span>
-                  <span className="font-medium text-slate-800 dark:text-slate-200">{formatCurrency(calcAmount)}</span>
+                  <span className="font-medium text-slate-800 dark:text-slate-200 whitespace-nowrap">{formatCurrency(calcAmount)}</span>
                 </div>
                 <div className="flex justify-between text-slate-500">
                   <span>Total Interest:</span>
-                  <span className="font-medium text-slate-800 dark:text-slate-200">{formatCurrency(totalInterest)}</span>
+                  <span className="font-medium text-slate-800 dark:text-slate-200 whitespace-nowrap">{formatCurrency(totalInterest)}</span>
                 </div>
                 <div className="flex justify-between text-slate-900 dark:text-white font-bold pt-1 border-t border-dashed border-slate-200 dark:border-slate-700">
                   <span>Total Repayable:</span>
-                  <span>{formatCurrency(totalPayable)}</span>
+                  <span className="whitespace-nowrap">{formatCurrency(totalPayable)}</span>
                 </div>
               </div>
 

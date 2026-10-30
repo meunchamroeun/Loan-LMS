@@ -56,7 +56,7 @@ export function LoginView() {
       <div className="absolute top-6 left-6 right-6 flex items-center justify-between z-20">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white border border-slate-800 shadow-md transition-all cursor-pointer group"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white border border-slate-800 shadow-md transition-all cursor-pointer group whitespace-nowrap"
         >
           <ArrowLeft className="h-4 w-4 text-blue-400 group-hover:-translate-x-0.5 transition-transform" />
           <span>Back to Dashboard</span>

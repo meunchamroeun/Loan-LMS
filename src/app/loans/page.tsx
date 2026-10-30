@@ -194,12 +194,12 @@ export default function LoansPage() {
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400">
+                    <span className="font-mono font-bold text-xs text-blue-600 dark:text-blue-400 whitespace-nowrap">
                       {item.loanNumber}
                     </span>
                     <StatusBadge status={item.status} />
                   </div>
-                  <div className="font-semibold text-sm text-slate-900 dark:text-white">
+                  <div className="font-semibold text-sm text-slate-900 dark:text-white truncate">
                     {item.customerName || `Loan #${item.loanId}`}
                   </div>
 
@@ -213,8 +213,8 @@ export default function LoansPage() {
                   </div>
 
                   <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
-                    <span className="text-slate-400">Remaining Bal:</span>
-                    <span className="font-bold text-slate-900 dark:text-white">
+                    <span className="text-slate-400 whitespace-nowrap">Remaining Bal:</span>
+                    <span className="font-bold text-slate-900 dark:text-white whitespace-nowrap">
                       {formatCurrency(item.totalRemainingAmount)}
                     </span>
                   </div>
@@ -242,14 +242,14 @@ export default function LoansPage() {
 
               <div className="flex items-center gap-4 text-xs">
                 <div className="text-right">
-                  <span className="text-slate-400">Monthly Installment</span>
-                  <div className="text-base font-bold text-blue-600 dark:text-blue-400">
+                  <span className="text-slate-400 whitespace-nowrap">Monthly Installment</span>
+                  <div className="text-base font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
                     {formatCurrency(scheduleDetail.installmentAmount)}
                   </div>
                 </div>
                 <div className="text-right pl-4 border-l border-slate-200 dark:border-slate-700">
-                  <span className="text-slate-400">Total Collected</span>
-                  <div className="text-base font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="text-slate-400 whitespace-nowrap">Total Collected</span>
+                  <div className="text-base font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
                     {formatCurrency(scheduleDetail.totalPaidAmount)}
                   </div>
                 </div>

@@ -44,7 +44,7 @@ export function BottomNav({ onOpenMenu }: BottomNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-800 shadow-lg px-2 py-1.5 safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200/80 dark:border-slate-800 shadow-lg px-2 pt-1.5 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
       <div className="flex items-center justify-around max-w-lg mx-auto">
         {BOTTOM_ITEMS.map((item) => {
           const isActive =
@@ -78,7 +78,7 @@ export function BottomNav({ onOpenMenu }: BottomNavProps) {
                   />
                 )}
               </div>
-              <span className="text-[10px] tracking-tight mt-1 truncate max-w-[64px]">
+              <span className="text-[10px] tracking-tight mt-1 whitespace-nowrap">
                 {item.name}
               </span>
             </Link>

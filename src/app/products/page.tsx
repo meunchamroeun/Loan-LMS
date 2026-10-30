@@ -147,7 +147,7 @@ export default function LoanProductsPage() {
                           <h3 className="font-bold text-base text-slate-900 dark:text-white">
                             {product.productName}
                           </h3>
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-slate-400 whitespace-nowrap font-mono">
                             Product Code: #LP-{product.loanProductId.toString().padStart(3, "0")}
                           </span>
                         </div>
@@ -193,7 +193,7 @@ export default function LoanProductsPage() {
                   </div>
 
                   <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                    <span className="text-slate-400">
+                    <span className="text-slate-400 whitespace-nowrap">
                       Processing Fee: <strong>{product.processingFee}%</strong>
                     </span>
                     <div className="flex items-center gap-3">

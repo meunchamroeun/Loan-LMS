@@ -108,7 +108,7 @@ export default function DailyCollectionsPage() {
               <button
                 key={officer.id}
                 onClick={() => setEmployeeId(officer.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
                   employeeId === officer.id
                     ? "bg-blue-600 text-white shadow-sm"
                     : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
@@ -134,7 +134,7 @@ export default function DailyCollectionsPage() {
                 <span className="text-xs uppercase tracking-wider font-semibold text-blue-100">
                   Total Receipts Today
                 </span>
-                <div className="text-3xl font-black mt-2">
+                <div className="text-3xl font-black mt-2 whitespace-nowrap">
                   <GsapCounter
                     value={collection?.grandTotal || 16270.5}
                     prefix="$"
@@ -145,7 +145,7 @@ export default function DailyCollectionsPage() {
               </div>
               <div className="flex items-center gap-2 mt-4 text-xs text-blue-100">
                 <CheckCircle className="h-4 w-4" />
-                <span>36 Total Repayment Transactions</span>
+                <span className="whitespace-nowrap">36 Total Repayment Transactions</span>
               </div>
             </Card>
           </motion.div>
@@ -160,21 +160,21 @@ export default function DailyCollectionsPage() {
             <Card className="p-6 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between h-full hover:shadow-md transition-all">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase text-slate-500">
+                  <span className="text-xs font-semibold uppercase text-slate-500 whitespace-nowrap">
                     Cash Physical Desk
                   </span>
-                  <Badge variant="warning">Cash Drawer</Badge>
+                  <Badge variant="warning" className="whitespace-nowrap">Cash Drawer</Badge>
                 </div>
-                <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
+                <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2 whitespace-nowrap">
                   {formatCurrency(collection?.cash?.totalAmount || 4850)}
                 </div>
-                <span className="text-xs text-slate-400 mt-1 block">
+                <span className="text-xs text-slate-400 mt-1 block whitespace-nowrap">
                   {collection?.cash?.count || 14} Cash receipts accepted
                 </span>
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
                 <span>Currency: USD</span>
-                <span className="text-emerald-600 font-semibold">Counted & Matched</span>
+                <span className="text-emerald-600 font-semibold whitespace-nowrap">Counted & Matched</span>
               </div>
             </Card>
           </motion.div>
@@ -189,21 +189,21 @@ export default function DailyCollectionsPage() {
             <Card className="p-6 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between h-full hover:shadow-md transition-all">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase text-slate-500">
+                  <span className="text-xs font-semibold uppercase text-slate-500 whitespace-nowrap">
                     Digital Bank Transfers
                   </span>
-                  <Badge variant="info">Bakong / ABA</Badge>
+                  <Badge variant="info" className="whitespace-nowrap">Bakong / ABA</Badge>
                 </div>
-                <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
+                <div className="text-2xl font-bold text-slate-900 dark:text-white mt-2 whitespace-nowrap">
                   {formatCurrency(collection?.bankTransfer?.totalAmount || 11420.5)}
                 </div>
-                <span className="text-xs text-slate-400 mt-1 block">
+                <span className="text-xs text-slate-400 mt-1 block whitespace-nowrap">
                   {collection?.bankTransfer?.count || 22} Cleared online transfers
                 </span>
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 flex justify-between">
-                <span>Channel: Real-time Gateway</span>
-                <span className="text-blue-600 font-semibold">100% Reconciled</span>
+                <span>Channel: Gateway</span>
+                <span className="text-blue-600 font-semibold whitespace-nowrap">100% Reconciled</span>
               </div>
             </Card>
           </motion.div>
