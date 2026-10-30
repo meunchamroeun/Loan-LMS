@@ -215,7 +215,7 @@ export default function CustomersPage() {
         </div>
 
         {/* Customer Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
               <SkeletonCatalogCard key={i} />
@@ -234,55 +234,59 @@ export default function CustomersPage() {
                 className="p-5 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/50 hover:shadow-md transition-all flex flex-col justify-between h-full"
               >
                 <div>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-11 w-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="h-11 w-11 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-sm shrink-0">
                         {customer.firstName[0]}
                         {customer.lastName[0]}
                       </div>
-                      <div>
-                        <div className="font-bold text-slate-900 dark:text-white text-sm">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-bold text-slate-900 dark:text-white text-sm whitespace-nowrap truncate">
                           {customer.firstName} {customer.lastName}
                         </div>
-                        <span className="text-xs text-slate-400 font-mono whitespace-nowrap">
+                        <span className="text-xs text-slate-400 font-mono whitespace-nowrap block">
                           {customer.nationalId}
                         </span>
                       </div>
                     </div>
-                    <StatusBadge status="ACTIVE_KYC" />
+                    <StatusBadge status="ACTIVE_KYC" className="shrink-0" />
                   </div>
 
                   <div className="space-y-2 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
                     <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                      <Phone className="h-3.5 w-3.5 text-slate-400" />
-                      <span className="whitespace-nowrap">{customer.phoneNumber}</span>
+                      <Phone className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                      <span className="whitespace-nowrap font-mono">{customer.phoneNumber}</span>
                     </div>
                     {customer.email && (
                       <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                        <Mail className="h-3.5 w-3.5 text-slate-400" />
+                        <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                         <span className="truncate">{customer.email}</span>
                       </div>
                     )}
                     {customer.address && (
                       <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                        <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                        <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                         <span className="truncate">{customer.address}</span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-400 whitespace-nowrap">
-                    DOB: {formatDate(customer.dateOfBirth)}
-                  </span>
+                <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+                  <div className="flex items-center justify-between text-[11px] text-slate-400">
+                    <span>Date of Birth</span>
+                    <span className="font-medium text-slate-600 dark:text-slate-300 font-mono whitespace-nowrap">
+                      {formatDate(customer.dateOfBirth)}
+                    </span>
+                  </div>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => openProfile(customer)}
-                    className="h-8 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 whitespace-nowrap"
+                    className="w-full h-8 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium whitespace-nowrap gap-1 cursor-pointer"
                   >
-                    View Profile & Employment
+                    <span>View Profile & Employment</span>
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               </Card>
