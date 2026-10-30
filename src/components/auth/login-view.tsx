@@ -119,7 +119,10 @@ export function LoginView() {
   };
 
   return (
-    <div className="relative isolate flex min-h-dvh items-center justify-center overflow-hidden bg-[#ece4d4] p-0 sm:p-6 dark:bg-[#18191b] select-none">
+    <div
+      suppressHydrationWarning
+      className="relative isolate flex min-h-dvh items-center justify-center overflow-hidden bg-[#ece4d4] p-0 sm:p-6 dark:bg-[#18191b] select-none"
+    >
       {/* 1. Animated Topographic WebGL Canvas Background */}
       <TopoCanvas />
 

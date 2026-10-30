@@ -180,7 +180,7 @@ export class ApiClient {
           // ignore parsing error
         }
         if (mockFallback !== undefined) {
-          console.warn(`API call to ${endpoint} failed (${errMessage}), falling back to mock data.`);
+          console.debug(`API call to ${endpoint} failed (${errMessage}), falling back to mock data.`);
           return mockFallback;
         }
         throw new Error(errMessage);
@@ -190,7 +190,7 @@ export class ApiClient {
       return (json.data !== undefined ? json.data : json) as T;
     } catch (err: any) {
       if (mockFallback !== undefined) {
-        console.warn(`API call error on ${endpoint}: ${err.message}. Using mock fallback.`);
+        console.debug(`API call error on ${endpoint}: ${err.message}. Using mock fallback.`);
         return mockFallback;
       }
       throw err;

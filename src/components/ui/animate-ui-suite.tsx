@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ShimmeringText } from "@animate-ui/react/primitives/texts/shimmering";
+import { motion } from "motion/react";
 import { CountingNumber } from "@animate-ui/react/primitives/texts/counting-number";
 import { Shine } from "@animate-ui/react/primitives/effects/shine";
 import { Tilt, TiltContent } from "@animate-ui/react/primitives/effects/tilt";
@@ -10,7 +10,7 @@ import { RippleButton, RippleButtonRipples } from "@animate-ui/react/primitives/
 import { cn } from "@/lib/utils";
 
 // ============================================================================
-// 1. Shimmering Text from Animate UI (animate-ui.com/docs/components/texts/shimmering-text)
+// 1. Shimmering Text (Hardware-accelerated shimmer effect, zero Motion color warnings)
 // ============================================================================
 export interface AnimateShimmerTextProps {
   text: string;
@@ -23,18 +23,35 @@ export interface AnimateShimmerTextProps {
 export function AnimateShimmerText({
   text,
   className,
-  duration = 2.2,
+  duration = 2.4,
   color,
-  shimmeringColor,
+  shimmeringColor = "rgba(255, 255, 255, 0.8)",
 }: AnimateShimmerTextProps) {
   return (
-    <ShimmeringText
-      text={text}
-      duration={duration}
-      color={color}
-      shimmeringColor={shimmeringColor || "rgba(255, 255, 255, 0.95)"}
-      className={cn("font-medium tracking-tight whitespace-nowrap", className)}
-    />
+    <span
+      className={cn(
+        "relative inline-flex items-center font-medium tracking-tight whitespace-nowrap overflow-hidden select-none",
+        className
+      )}
+      style={color ? { color } : undefined}
+    >
+      <span className="relative z-10">{text}</span>
+      <motion.span
+        aria-hidden="true"
+        className="absolute inset-0 z-20 pointer-events-none"
+        style={{
+          background: `linear-gradient(90deg, transparent 0%, ${shimmeringColor} 50%, transparent 100%)`,
+        }}
+        initial={{ x: "-100%" }}
+        animate={{ x: "200%" }}
+        transition={{
+          repeat: Infinity,
+          duration,
+          ease: "easeInOut",
+          repeatDelay: 0.6,
+        }}
+      />
+    </span>
   );
 }
 

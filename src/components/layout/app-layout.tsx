@@ -27,7 +27,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen h-[100dvh] w-full overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
+    <div
+      suppressHydrationWarning
+      className="flex h-screen h-[100dvh] w-full overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased"
+    >
       {/* Desktop Persistent Sidebar (Permanently anchored on left, NEVER scrolls with page) */}
       <Sidebar />
 

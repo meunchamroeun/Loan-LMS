@@ -46,7 +46,7 @@ export function AppLoader({
   // Minimal variant for table/card widgets
   if (variant === "minimal") {
     return (
-      <div className={cn("flex flex-col items-center justify-center p-6 gap-2.5", className)}>
+      <div suppressHydrationWarning className={cn("flex flex-col items-center justify-center p-6 gap-2.5", className)}>
         <MotionOrbitSpinner size="md" />
         <span className="text-xs text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">
           {sublabel || "Loading data..."}
@@ -58,7 +58,7 @@ export function AppLoader({
   // Dots wave variant
   if (variant === "dots") {
     return (
-      <div className={cn("flex flex-col items-center justify-center p-6 gap-2", className)}>
+      <div suppressHydrationWarning className={cn("flex flex-col items-center justify-center p-6 gap-2", className)}>
         <MotionDotsLoader size="md" />
         <span className="text-xs text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">
           {sublabel || "Processing request..."}
@@ -68,7 +68,7 @@ export function AppLoader({
   }
 
   const content = (
-    <div className="flex flex-col items-center justify-center p-8 max-w-sm mx-auto text-center select-none">
+    <div suppressHydrationWarning className="flex flex-col items-center justify-center p-8 max-w-sm mx-auto text-center select-none">
       {/* Animated Brand Emblem with Motion Orbit & Aura */}
       <div className="relative mb-6">
         {/* Ambient Gradient Glow */}
@@ -146,14 +146,14 @@ export function AppLoader({
 
   if (!fullScreen) {
     return (
-      <div className={cn("py-12 w-full flex items-center justify-center", className)}>
+      <div suppressHydrationWarning className={cn("py-12 w-full flex items-center justify-center", className)}>
         {content}
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-md">
+    <div suppressHydrationWarning className="fixed inset-0 z-50 flex items-center justify-center bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-md">
       {content}
     </div>
   );
