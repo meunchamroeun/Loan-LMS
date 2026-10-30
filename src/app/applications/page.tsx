@@ -658,7 +658,7 @@ export default function ApplicationsPage() {
           <DialogHeader>
             <DialogTitle>New Credit Facility Application</DialogTitle>
             <DialogDescription>
-              Launch new underwriting file connected to <code className="text-xs">POST /api/v1/applications</code>
+              Launch new underwriting file for risk scoring, collateral audit, and approval decree
             </DialogDescription>
           </DialogHeader>
 

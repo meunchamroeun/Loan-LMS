@@ -457,7 +457,7 @@ export default function CustomersPage() {
           <DialogHeader>
             <DialogTitle>Register New Customer</DialogTitle>
             <DialogDescription>
-              New borrower identity connected to <code className="text-xs">POST /api/v1/customers</code>
+              Register borrower identity, national ID card, and contact information
             </DialogDescription>
           </DialogHeader>
 

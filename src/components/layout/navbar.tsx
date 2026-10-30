@@ -16,6 +16,7 @@ import {
   LogIn,
   Menu,
   Banknote,
+  Building2,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { usePWA } from "@/components/pwa/pwa-provider";
@@ -114,13 +115,22 @@ export function Navbar() {
         </div>
 
         {/* Right Controls */}
-        <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+        <div className="flex items-center gap-2 sm:gap-2.5 ml-auto">
+          {/* Branch & FX Telemetry */}
+          <Badge variant="outline" className="hidden xl:inline-flex items-center gap-1.5 text-[11px] h-7 px-2.5 font-medium border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300">
+            <Building2 className="h-3 w-3 text-blue-500" />
+            <span>HQ Branch #001</span>
+          </Badge>
+          <Badge variant="outline" className="hidden 2xl:inline-flex items-center gap-1.5 text-[11px] h-7 px-2.5 font-mono text-slate-500">
+            <span>FX: $1 = 4,100 KHR</span>
+          </Badge>
+
           <Link
             href="/login"
             className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold border border-blue-200 dark:border-blue-800/80 bg-blue-50/80 hover:bg-blue-100 dark:bg-blue-950/50 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-400 transition-colors shadow-xs"
           >
             <LogIn className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Login Tab</span>
+            <span className="hidden sm:inline">Staff Sign In</span>
           </Link>
 
           <TechBadgeShowcase />

@@ -330,7 +330,7 @@ export default function LoansPage() {
           <DialogHeader>
             <DialogTitle>Post Loan Repayment</DialogTitle>
             <DialogDescription>
-              Record payment connected to <code className="text-xs">POST /api/v1/repayments</code>
+              Record installment settlement, reconciliation reference, and transaction ledger details
             </DialogDescription>
           </DialogHeader>
 

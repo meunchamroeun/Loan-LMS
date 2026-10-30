@@ -9,44 +9,44 @@ const TECH_ITEMS = [
   {
     name: "Radix UI",
     url: "https://www.radix-ui.com/",
-    badge: "Primitives",
+    badge: "Accessible Primitives",
     color: "bg-purple-500/10 text-purple-600 border-purple-500/20",
-    description: "Accessible headless components for Dialogs, Dropdown Menus, Selects, Tabs, Tooltips & Popovers.",
+    description: "WAI-ARIA compliant headless primitives for credit dialogs, dropdowns, select menus, and underwriting tabs.",
   },
   {
     name: "shadcn/ui",
     url: "https://ui.shadcn.com/",
-    badge: "Design System",
+    badge: "Design Tokens",
     color: "bg-slate-500/10 text-slate-700 dark:text-slate-300 border-slate-500/20",
-    description: "Component architecture, accessible token design, crisp typography, and sleek card patterns.",
+    description: "Enterprise design tokens, typography scales, financial card components, and consistent state styling.",
   },
   {
     name: "Base UI",
     url: "https://base-ui.com/",
-    badge: "Headless UI",
+    badge: "Headless Engine",
     color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
-    description: "Interactive Loan Amount & Term Sliders (@base-ui/react/slider), Switch, Progress & Accordion.",
+    description: "Unstyled primitives powering loan amortization sliders, status toggle switches, and progress meters.",
   },
   {
     name: "Tailwind CSS",
     url: "https://tailwindcss.com/",
-    badge: "v4 Styling",
+    badge: "Styling System",
     color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
-    description: "Modern utility-first styling with dual light/dark themes, glassmorphism, and responsive layout.",
+    description: "Responsive styling engine with dual light/dark microfinance themes, glassmorphism, and responsive layouts.",
   },
   {
     name: "Motion",
     url: "https://motion.dev/",
-    badge: "Motion Dev",
+    badge: "Physics Motion",
     color: "bg-rose-500/10 text-rose-600 border-rose-500/20",
-    description: "Fluid page transitions, spring-physics button taps, interactive tab changes & modal popups.",
+    description: "Spring physics transitions, interactive button micro-interactions, modal drawers, and staggered data feeds.",
   },
   {
     name: "GSAP",
     url: "https://gsap.com/",
-    badge: "Timeline Animations",
+    badge: "Timeline Engine",
     color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-    description: "Real-time animated counter rollups for portfolio metrics and credit risk gauge speedometer needles.",
+    description: "Real-time animated counter rollups for portfolio balances and dynamic credit risk speedometer needle rotation.",
   },
 ];
 
@@ -64,14 +64,17 @@ export function TechBadgeShowcase({ className }: { className?: string }) {
             <span className="h-2 w-2 rounded-full bg-purple-500" />
             <span className="h-2 w-2 rounded-full bg-rose-500" />
           </div>
-          <span className="font-semibold">Tech Stack Active</span>
-          <span className="text-[10px] text-slate-400 group-hover:text-blue-500">6 Libraries • Details</span>
+          <span className="font-semibold">System Architecture</span>
+          <span className="text-[10px] text-slate-400 group-hover:text-blue-500">Framework Specs</span>
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-88 p-4">
         <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800">
           <Sparkles className="h-4 w-4 text-amber-500" />
-          <h4 className="font-bold text-sm text-slate-900 dark:text-white">Active UI & Animation Suite</h4>
+          <div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Enterprise UI & Framework Stack</h4>
+            <p className="text-[11px] text-slate-400">Production-grade architecture verified for LMS operations</p>
+          </div>
         </div>
         <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
           {TECH_ITEMS.map((t) => (

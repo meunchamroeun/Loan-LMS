@@ -552,7 +552,7 @@ export default function DashboardPage() {
                 Interactive Loan Amortization Simulator
               </CardTitle>
               <CardDescription className="text-xs">
-                Powered by Base UI headless Slider primitive (<code className="text-blue-600 dark:text-blue-400 font-mono">@base-ui/react</code>)
+                Dynamic installment modeling, interest calculation, and debt service ratios
               </CardDescription>
             </div>
           </div>
@@ -744,16 +744,16 @@ export default function DashboardPage() {
           </div>
         </Card>
 
-        {/* Base UI Accordion: Underwriting Knowledge Base & Regulatory Policies */}
+        {/* Regulatory Guidelines & Credit Policies */}
         <div className="space-y-3 pt-2">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                Underwriting Policies & Knowledge Base
+                Underwriting Policies & Credit Guidelines
               </h3>
               <p className="text-xs text-slate-500">
-                Interactive regulatory guidelines powered by Base UI Accordion (<code className="text-blue-600 dark:text-blue-400 font-mono">@base-ui/react/accordion</code>)
+                National Bank regulatory standards, risk threshold compliance, and collateral limits
               </p>
             </div>
             <Badge variant="info" className="text-[10px] w-fit">NBC Standard Compliant</Badge>
@@ -802,7 +802,7 @@ export default function DashboardPage() {
           <DialogHeader>
             <DialogTitle>New Loan Application</DialogTitle>
             <DialogDescription>
-              Submit credit request connected to <code className="text-xs">POST /api/v1/applications</code>
+              Submit borrower credit facility request for risk scoring and committee appraisal
             </DialogDescription>
           </DialogHeader>
 
@@ -896,7 +896,7 @@ export default function DashboardPage() {
           <DialogHeader>
             <DialogTitle>Register New Customer</DialogTitle>
             <DialogDescription>
-              Create customer profile connected to <code className="text-xs">POST /api/v1/customers</code>
+              Create borrower KYC profile, verified national ID, and contact details
             </DialogDescription>
           </DialogHeader>
 
@@ -996,7 +996,7 @@ export default function DashboardPage() {
           <DialogHeader>
             <DialogTitle>Record Loan Repayment</DialogTitle>
             <DialogDescription>
-              Execute payment connected to <code className="text-xs">POST /api/v1/repayments</code>
+              Execute installment payment against amortization schedule and issue receipt
             </DialogDescription>
           </DialogHeader>
 

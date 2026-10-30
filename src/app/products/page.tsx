@@ -212,7 +212,7 @@ export default function LoanProductsPage() {
           <DialogHeader>
             <DialogTitle>Create Loan Product</DialogTitle>
             <DialogDescription>
-              Model credit rules connected to <code className="text-xs">POST /api/v1/loan-products</code>
+              Define APR tiers, maximum financing ceilings, and repayment tenure constraints
             </DialogDescription>
           </DialogHeader>
 

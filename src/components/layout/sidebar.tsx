@@ -67,10 +67,10 @@ const NAV_ITEMS = [
     badge: null,
   },
   {
-    name: "Login / Auth Portal",
+    name: "Staff Authentication",
     href: "/login",
     icon: LogIn,
-    badge: "Auth",
+    badge: "Portal",
   },
 ];
 
