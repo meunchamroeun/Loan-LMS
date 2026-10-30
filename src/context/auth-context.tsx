@@ -43,10 +43,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsDemoMode(demo);
 
       const token = api.getAccessToken();
-      if (token) {
+      if (token && token !== "mock-jwt-token-lms-super-admin") {
         await refreshProfile();
-      } else if (demo) {
-        // Auto-login with mock user if in demo mode
+      } else {
+        // Auto-initialize demo/guest profile
         setUser({
           userId: 1,
           username: "admin_demo",

@@ -42,13 +42,13 @@ export function BaseLoanSlider({
           if (typeof val === "number") onValueChange(val);
           else if (Array.isArray(val) && typeof val[0] === "number") onValueChange(val[0]);
         }}
-        className="relative flex items-center select-none touch-none w-full h-5 cursor-pointer"
+        className="w-full"
       >
-        <BaseSlider.Control className="relative flex items-center w-full h-2 rounded-full bg-slate-200 dark:bg-slate-800">
-          <BaseSlider.Track className="relative h-2 w-full rounded-full overflow-hidden">
-            <BaseSlider.Indicator className="absolute h-full bg-blue-600 rounded-full" />
+        <BaseSlider.Control className="relative flex items-center w-full h-6 cursor-pointer touch-none select-none">
+          <BaseSlider.Track className="relative h-2 w-full rounded-full bg-slate-200 dark:bg-slate-700">
+            <BaseSlider.Indicator className="h-full bg-blue-600 rounded-full" />
+            <BaseSlider.Thumb className="block h-5 w-5 rounded-full bg-white border-2 border-blue-600 shadow-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none cursor-grab active:cursor-grabbing" />
           </BaseSlider.Track>
-          <BaseSlider.Thumb className="block h-5 w-5 rounded-full bg-white border-2 border-blue-600 shadow-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none" />
         </BaseSlider.Control>
       </BaseSlider.Root>
       <div className="flex justify-between text-[11px] text-slate-400">

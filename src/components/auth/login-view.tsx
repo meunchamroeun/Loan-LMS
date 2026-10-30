@@ -106,6 +106,39 @@ export function LoginView() {
           </div>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setUsername("admin");
+                  setPassword("password");
+                }}
+                className="px-2.5 py-1 text-[11px] rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 cursor-pointer"
+              >
+                Fill Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUsername("officer");
+                  setPassword("password");
+                }}
+                className="px-2.5 py-1 text-[11px] rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 cursor-pointer"
+              >
+                Fill Officer
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUsername("cashier");
+                  setPassword("password");
+                }}
+                className="px-2.5 py-1 text-[11px] rounded-lg bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border border-purple-500/20 cursor-pointer"
+              >
+                Fill Cashier
+              </button>
+            </div>
+
             <div className="space-y-1.5">
               <Label className="text-xs text-slate-300">Username</Label>
               <div className="relative">

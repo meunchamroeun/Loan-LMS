@@ -87,6 +87,11 @@ export default function DashboardPage() {
   const [products, setProducts] = useState<LoanProductResponse[]>([]);
   const [customers, setCustomers] = useState<CustomerResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Loan Calculator State
   const [calcAmount, setCalcAmount] = useState(12000);
@@ -376,56 +381,62 @@ export default function DashboardPage() {
             </div>
 
             <div className="h-72 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={MONTHLY_TREND_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="disbursedGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
-                    </linearGradient>
-                    <linearGradient id="collectedGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
-                  <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748b" }} />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tick={{ fontSize: 11, fill: "#64748b" }}
-                    tickFormatter={(v) => `$${v / 1000}k`}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(15, 23, 42, 0.95)",
-                      borderRadius: "12px",
-                      border: "1px solid rgba(51, 65, 85, 0.5)",
-                      fontSize: "12px",
-                      color: "#fff",
-                    }}
-                    formatter={(val: any) => [formatCurrency(Number(val)), ""]}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="disbursed"
-                    name="Disbursed"
-                    stroke="#2563eb"
-                    strokeWidth={2.5}
-                    fillOpacity={1}
-                    fill="url(#disbursedGrad)"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="collected"
-                    name="Collected"
-                    stroke="#10b981"
-                    strokeWidth={2.5}
-                    fillOpacity={1}
-                    fill="url(#collectedGrad)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              {isMounted ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={MONTHLY_TREND_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="disbursedGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
+                      </linearGradient>
+                      <linearGradient id="collectedGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.2} />
+                    <XAxis dataKey="month" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#64748b" }} />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 11, fill: "#64748b" }}
+                      tickFormatter={(v) => `$${v / 1000}k`}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(15, 23, 42, 0.95)",
+                        borderRadius: "12px",
+                        border: "1px solid rgba(51, 65, 85, 0.5)",
+                        fontSize: "12px",
+                        color: "#fff",
+                      }}
+                      formatter={(val: any) => [formatCurrency(Number(val)), ""]}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="disbursed"
+                      name="Disbursed"
+                      stroke="#2563eb"
+                      strokeWidth={2.5}
+                      fillOpacity={1}
+                      fill="url(#disbursedGrad)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="collected"
+                      name="Collected"
+                      stroke="#10b981"
+                      strokeWidth={2.5}
+                      fillOpacity={1}
+                      fill="url(#collectedGrad)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-full w-full rounded-xl bg-slate-100/50 dark:bg-slate-800/40 animate-pulse flex items-center justify-center text-xs text-slate-400">
+                  Initializing liquidity chart...
+                </div>
+              )}
             </div>
           </Card>
 
@@ -440,35 +451,43 @@ export default function DashboardPage() {
               </CardDescription>
 
               <div className="h-52 w-full mt-2 relative flex items-center justify-center">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={PORTFOLIO_STATUS_DATA}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={55}
-                      outerRadius={75}
-                      paddingAngle={4}
-                      dataKey="value"
-                    >
-                      {PORTFOLIO_STATUS_DATA.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "rgba(15, 23, 42, 0.95)",
-                        borderRadius: "8px",
-                        border: "1px solid #334155",
-                        fontSize: "12px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute flex flex-col items-center pointer-events-none">
-                  <span className="text-xl font-bold text-slate-900 dark:text-white">96.8%</span>
-                  <span className="text-[10px] text-slate-400">Health</span>
-                </div>
+                {isMounted ? (
+                  <>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={PORTFOLIO_STATUS_DATA}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={55}
+                          outerRadius={75}
+                          paddingAngle={4}
+                          dataKey="value"
+                        >
+                          {PORTFOLIO_STATUS_DATA.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: "rgba(15, 23, 42, 0.95)",
+                            borderRadius: "8px",
+                            border: "1px solid #334155",
+                            fontSize: "12px",
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <div className="absolute flex flex-col items-center pointer-events-none">
+                      <span className="text-xl font-bold text-slate-900 dark:text-white">96.8%</span>
+                      <span className="text-[10px] text-slate-400">Health</span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="h-full w-full rounded-xl bg-slate-100/50 dark:bg-slate-800/40 animate-pulse flex items-center justify-center text-xs text-slate-400">
+                    Loading portfolio...
+                  </div>
+                )}
               </div>
             </div>
 

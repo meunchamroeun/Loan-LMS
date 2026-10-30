@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 interface GsapCounterProps {
@@ -21,6 +21,13 @@ export function GsapCounter({
   className = "",
 }: GsapCounterProps) {
   const numberRef = useRef<HTMLSpanElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  const formatNum = (n: number) =>
+    n.toLocaleString("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
 
   useEffect(() => {
     const el = numberRef.current;
@@ -33,12 +40,11 @@ export function GsapCounter({
       ease: "power2.out",
       onUpdate: () => {
         if (el) {
-          const formatted = proxy.val.toLocaleString("en-US", {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals,
-          });
-          el.innerText = `${prefix}${formatted}${suffix}`;
+          el.innerText = `${prefix}${formatNum(proxy.val)}${suffix}`;
         }
+      },
+      onComplete: () => {
+        setHasAnimated(true);
       },
     });
 
@@ -47,5 +53,9 @@ export function GsapCounter({
     };
   }, [value, duration, prefix, suffix, decimals]);
 
-  return <span ref={numberRef} className={className} />;
+  return (
+    <span ref={numberRef} className={className} suppressHydrationWarning>
+      {prefix}{formatNum(value)}{suffix}
+    </span>
+  );
 }
