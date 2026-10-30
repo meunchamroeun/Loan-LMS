@@ -18,10 +18,12 @@ import {
   ShieldCheck,
   ChevronRight,
   X,
+  ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import { Badge } from "@/components/ui/badge";
+import { BaseToggleSwitch } from "@/components/ui/base-switch";
 
 const NAV_ITEMS = [
   {
@@ -76,7 +78,7 @@ const NAV_ITEMS = [
 
 export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
-  const { user, logout, isDemoMode } = useAuth();
+  const { user, logout, isDemoMode, toggleDemoMode } = useAuth();
 
   return (
     <div className="flex flex-col h-full">
@@ -142,6 +144,26 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           );
         })}
       </nav>
+
+      {/* Mobile-Only Actions: Demo Mode & Swagger */}
+      <div className="p-3 mx-3 mb-2 space-y-2 rounded-xl bg-slate-50 border border-slate-200/60 dark:bg-slate-800/40 dark:border-slate-800 shrink-0">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-slate-700 dark:text-slate-300 font-medium">Demo Mode</span>
+          <BaseToggleSwitch
+            checked={isDemoMode}
+            onCheckedChange={(checked) => toggleDemoMode(checked)}
+          />
+        </div>
+        <a
+          href="https://loan.cavkim.tech/webjars/swagger-ui/index.html"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center justify-between pt-2 border-t border-slate-200/50 dark:border-slate-700/50 text-[11px] text-slate-500 hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          <span>Swagger API Docs</span>
+          <ExternalLink className="h-3 w-3" />
+        </a>
+      </div>
 
       {/* API status badge */}
       <div className="p-3 mx-3 mb-2 rounded-xl bg-slate-50 border border-slate-200/60 dark:bg-slate-800/40 dark:border-slate-800 shrink-0">
