@@ -81,7 +81,7 @@ export function LoginView() {
 
   const [lang, setLang] = useState<Lang>("km");
   const [identifier, setIdentifier] = useState("admin");
-  const [password, setPassword] = useState("password");
+  const [password, setPassword] = useState("admin123");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -407,7 +407,7 @@ export function LoginView() {
                     type="button"
                     onClick={() => {
                       setIdentifier("admin");
-                      setPassword("password");
+                      setPassword("admin123");
                     }}
                     className="px-2 py-0.5 rounded-md bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-[11px] font-medium transition-colors cursor-pointer"
                   >
@@ -416,6 +416,7 @@ export function LoginView() {
                   <button
                     type="button"
                     onClick={() => {
+                      handleSelectServer(true);
                       setIdentifier("officer");
                       setPassword("password");
                     }}
@@ -426,6 +427,7 @@ export function LoginView() {
                   <button
                     type="button"
                     onClick={() => {
+                      handleSelectServer(true);
                       setIdentifier("cashier");
                       setPassword("password");
                     }}

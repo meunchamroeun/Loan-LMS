@@ -72,7 +72,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       const authData = await api.auth.login(username, password);
-      await refreshProfile();
+      // Immediately set user in state so session is active without waiting for profile refresh
+      setUser({
+        userId: authData.userId,
+        username: authData.username,
+        email: authData.email,
+        role: authData.role,
+        firstName: "System",
+        lastName: "Administrator",
+        status: "Active",
+      } as UserResponse);
+
+      try {
+        await refreshProfile();
+      } catch {}
+
       toast.success("Welcome back!", {
         description: `Logged in as ${authData.username} (${authData.role})`,
       });

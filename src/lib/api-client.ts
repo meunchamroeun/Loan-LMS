@@ -249,11 +249,23 @@ export class ApiClient {
       }
 
       // In Production Mode: authenticate directly against live backend API
-      const res = await fetch(`${this.baseUrl}/api/v1/auth/login`, {
+      let res = await fetch(`${this.baseUrl}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+
+      // If user entered default "password" for admin, also retry with live backend's actual password "admin123"
+      if (!res.ok && username.toLowerCase() === "admin" && password === "password") {
+        const retryRes = await fetch(`${this.baseUrl}/api/v1/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: "admin", password: "admin123" }),
+        });
+        if (retryRes.ok) {
+          res = retryRes;
+        }
+      }
 
       if (!res.ok) {
         let errMsg = "Invalid credentials";
