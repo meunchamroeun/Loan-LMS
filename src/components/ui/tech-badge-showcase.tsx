@@ -35,6 +35,13 @@ const TECH_ITEMS = [
     description: "Responsive styling engine with dual light/dark microfinance themes, glassmorphism, and responsive layouts.",
   },
   {
+    name: "Animate UI",
+    url: "https://animate-ui.com/",
+    badge: "Animated Primitives",
+    color: "bg-violet-500/10 text-violet-600 border-violet-500/20",
+    description: "Drop-in animated primitives for Radix UI, 3D tilt cards, ripple buttons, shining badges, and text shimmers.",
+  },
+  {
     name: "Motion",
     url: "https://motion.dev/ui/loaders",
     badge: "Physics Loaders",

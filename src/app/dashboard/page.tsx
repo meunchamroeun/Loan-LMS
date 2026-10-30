@@ -25,6 +25,7 @@ import { BaseProgressBar } from "@/components/ui/base-progress";
 import { BaseAccordionGroup } from "@/components/ui/base-accordion";
 import { InfoTooltip } from "@/components/ui/tooltip";
 import { TechBadgeShowcase } from "@/components/ui/tech-badge-showcase";
+import { AnimateTiltCard, AnimateShimmerText, AnimateShine } from "@/components/ui/animate-ui-suite";
 import {
   Dialog,
   DialogContent,
@@ -242,9 +243,20 @@ export default function DashboardPage() {
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Credit Overview & Operations
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Real-time portfolio metrics, live amortization schedule tracking, and branch dispatches.
-            </p>
+            <div className="flex flex-wrap items-center gap-2 mt-1">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Real-time portfolio metrics, live amortization schedule tracking, and branch dispatches.
+              </p>
+              <span className="hidden sm:inline text-slate-300 dark:text-slate-700">•</span>
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <AnimateShimmerText
+                  text="API: loan.cavkim.tech active"
+                  duration={2.4}
+                  className="text-xs text-blue-600 dark:text-blue-400 font-medium"
+                />
+              </div>
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
             <Button
@@ -263,20 +275,22 @@ export default function DashboardPage() {
               <CreditCard className="h-4 w-4" />
               Record Repayment
             </Button>
-            <AnimatedButton
-              onClick={() => setIsAppDialogOpen(true)}
-              className="gap-2 text-xs shadow-md shadow-blue-500/20"
-            >
-              <PlusCircle className="h-4 w-4" />
-              New Application
-            </AnimatedButton>
+            <AnimateShine>
+              <AnimatedButton
+                onClick={() => setIsAppDialogOpen(true)}
+                className="gap-2 text-xs shadow-md shadow-blue-500/20"
+              >
+                <PlusCircle className="h-4 w-4" />
+                New Application
+              </AnimatedButton>
+            </AnimateShine>
           </div>
         </div>
 
-        {/* 4 Metric KPI Cards with GSAP Counters, Motion Hover & Radix Tooltips */}
+        {/* 4 Metric KPI Cards with Animate UI 3D Tilt, GSAP Counters & Radix Tooltips */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Disbursed */}
-          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+          <AnimateTiltCard maxTilt={5}>
             <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-blue-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -306,10 +320,10 @@ export default function DashboardPage() {
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </AnimateTiltCard>
 
           {/* Card 2: Total Collected */}
-          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+          <AnimateTiltCard maxTilt={5}>
             <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-emerald-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -339,10 +353,10 @@ export default function DashboardPage() {
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </AnimateTiltCard>
 
           {/* Card 3: Active Loans */}
-          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+          <AnimateTiltCard maxTilt={5}>
             <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-indigo-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -371,10 +385,10 @@ export default function DashboardPage() {
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </AnimateTiltCard>
 
           {/* Card 4: Overdue Installments */}
-          <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+          <AnimateTiltCard maxTilt={5}>
             <Card className="p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:border-rose-500/50 hover:shadow-lg transition-all h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -402,7 +416,7 @@ export default function DashboardPage() {
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </AnimateTiltCard>
         </div>
 
         {/* Charts Section: Area Trend & Portfolio Donut */}

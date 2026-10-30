@@ -18,6 +18,7 @@ import { SkeletonCatalogCard } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GsapCounter } from "@/components/ui/gsap-counter";
+import { AnimateTiltCard, AnimateShine } from "@/components/ui/animate-ui-suite";
 import {
   Dialog,
   DialogContent,
@@ -172,13 +173,15 @@ export default function CustomersPage() {
               Manage client KYC, verified national IDs, employment profiles, and creditworthiness records.
             </p>
           </div>
-          <AnimatedButton
-            onClick={() => setIsCreateOpen(true)}
-            className="gap-2 text-xs shadow-md shadow-blue-500/20"
-          >
-            <PlusCircle className="h-4 w-4" />
-            Register Customer
-          </AnimatedButton>
+          <AnimateShine>
+            <AnimatedButton
+              onClick={() => setIsCreateOpen(true)}
+              className="gap-2 text-xs shadow-md shadow-blue-500/20"
+            >
+              <PlusCircle className="h-4 w-4" />
+              Register Customer
+            </AnimatedButton>
+          </AnimateShine>
         </div>
 
         {/* Search & Filter Bar */}
@@ -224,8 +227,9 @@ export default function CustomersPage() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, delay: idx * 0.04 }}
-              whileHover={{ y: -3 }}
+              className="h-full"
             >
+              <AnimateTiltCard maxTilt={4}>
               <Card
                 className="p-5 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/50 hover:shadow-md transition-all flex flex-col justify-between h-full"
               >
@@ -282,6 +286,7 @@ export default function CustomersPage() {
                   </Button>
                 </div>
               </Card>
+              </AnimateTiltCard>
             </motion.div>
           ))
         )}

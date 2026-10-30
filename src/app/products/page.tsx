@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BaseToggleSwitch } from "@/components/ui/base-switch";
 import { InfoTooltip } from "@/components/ui/tooltip";
+import { AnimateTiltCard, AnimateShine } from "@/components/ui/animate-ui-suite";
 import {
   Dialog,
   DialogContent,
@@ -134,8 +135,9 @@ export default function LoanProductsPage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.08 }}
-                whileHover={{ y: -4 }}
+                className="h-full"
               >
+                <AnimateTiltCard maxTilt={5}>
                 <Card className="p-6 border border-slate-200/80 dark:border-slate-800 hover:border-blue-500/40 hover:shadow-lg transition-all flex flex-col justify-between h-full">
                   <div>
                     <div className="flex items-start justify-between">
@@ -205,6 +207,7 @@ export default function LoanProductsPage() {
                     </div>
                   </div>
                 </Card>
+                </AnimateTiltCard>
               </motion.div>
             );
           })

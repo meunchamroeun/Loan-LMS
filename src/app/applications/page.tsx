@@ -23,6 +23,7 @@ import { SkeletonTableRows } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { AnimateShimmerText, AnimateShine } from "@/components/ui/animate-ui-suite";
 import {
   Dialog,
   DialogContent,
@@ -232,13 +233,15 @@ export default function ApplicationsPage() {
               Manage underwriting pipelines, risk appraisals, collateral verification, and approval decrees.
             </p>
           </div>
-          <AnimatedButton
-            onClick={() => setIsCreateOpen(true)}
-            className="gap-2 text-xs shadow-md shadow-blue-500/20"
-          >
-            <PlusCircle className="h-4 w-4" />
-            New Application
-          </AnimatedButton>
+          <AnimateShine>
+            <AnimatedButton
+              onClick={() => setIsCreateOpen(true)}
+              className="gap-2 text-xs shadow-md shadow-blue-500/20"
+            >
+              <PlusCircle className="h-4 w-4" />
+              New Application
+            </AnimatedButton>
+          </AnimateShine>
         </div>
 
         {/* Filter & Search Bar */}

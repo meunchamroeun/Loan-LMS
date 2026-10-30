@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button, AnimatedButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { GsapCounter } from "@/components/ui/gsap-counter";
+import { AnimateTiltCard, AnimateShine } from "@/components/ui/animate-ui-suite";
 import {
   CalendarCheck2,
   DollarSign,
@@ -123,32 +124,29 @@ export default function DailyCollectionsPage() {
         {/* Big Metric Banner: Grand Total */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1: Grand Total */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ y: -4 }}
-          >
-            <Card className="p-6 border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/20 h-full flex flex-col justify-between">
-              <div>
-                <span className="text-xs uppercase tracking-wider font-semibold text-blue-100">
-                  Total Receipts Today
-                </span>
-                <div className="text-3xl font-black mt-2 whitespace-nowrap">
-                  <GsapCounter
-                    value={collection?.grandTotal || 16270.5}
-                    prefix="$"
-                    duration={1.5}
-                    decimals={2}
-                  />
+          <AnimateTiltCard maxTilt={5}>
+            <AnimateShine className="h-full">
+              <Card className="p-6 border border-slate-200/80 dark:border-slate-800 bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/20 h-full flex flex-col justify-between">
+                <div>
+                  <span className="text-xs uppercase tracking-wider font-semibold text-blue-100">
+                    Total Receipts Today
+                  </span>
+                  <div className="text-3xl font-black mt-2 whitespace-nowrap">
+                    <GsapCounter
+                      value={collection?.grandTotal || 16270.5}
+                      prefix="$"
+                      duration={1.5}
+                      decimals={2}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2 mt-4 text-xs text-blue-100">
-                <CheckCircle className="h-4 w-4" />
-                <span className="whitespace-nowrap">36 Total Repayment Transactions</span>
-              </div>
-            </Card>
-          </motion.div>
+                <div className="flex items-center gap-2 mt-4 text-xs text-blue-100">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="whitespace-nowrap">36 Total Repayment Transactions</span>
+                </div>
+              </Card>
+            </AnimateShine>
+          </AnimateTiltCard>
 
           {/* Card 2: Cash Over-the-Counter */}
           <motion.div

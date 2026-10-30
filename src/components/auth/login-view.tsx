@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
+import { AnimateShimmerText, AnimateShine } from "@/components/ui/animate-ui-suite";
 
 export function LoginView() {
   const router = useRouter();
@@ -217,15 +218,17 @@ export function LoginView() {
               </div>
             </div>
 
-            <AnimatedButton
-              type="submit"
-              loading={isSubmitting || isLoading}
-              loadingText="Authenticating with Gateway..."
-              className="w-full h-10 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm mt-2 shadow-lg shadow-blue-600/30"
-            >
-              Sign In to Console
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </AnimatedButton>
+            <AnimateShine className="w-full mt-2">
+              <AnimatedButton
+                type="submit"
+                loading={isSubmitting || isLoading}
+                loadingText="Authenticating with Gateway..."
+                className="w-full h-10 bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm shadow-lg shadow-blue-600/30"
+              >
+                Sign In to Console
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </AnimatedButton>
+            </AnimateShine>
           </form>
 
           {/* Quick Demo Access Option */}
