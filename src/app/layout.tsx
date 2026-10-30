@@ -56,7 +56,7 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
+      <body className="h-full overflow-hidden flex flex-col font-sans" suppressHydrationWarning>
         <AuthProvider>
           <PWAProvider>{children}</PWAProvider>
         </AuthProvider>

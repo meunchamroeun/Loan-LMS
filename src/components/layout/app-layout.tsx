@@ -27,8 +27,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden max-w-full w-full">
-      {/* Desktop Persistent Sidebar */}
+    <div className="flex h-screen h-[100dvh] w-full overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
+      {/* Desktop Persistent Sidebar (Permanently anchored on left, NEVER scrolls with page) */}
       <Sidebar />
 
       {/* Mobile Slide-Over Navigation Drawer */}
@@ -37,12 +37,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full overflow-hidden">
-        {/* Responsive Navbar */}
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+        {/* Responsive Navbar (Permanently anchored at top, NEVER scrolls away) */}
         <Navbar onOpenMenu={() => setIsMobileMenuOpen(true)} />
 
-        {/* Main Content Area with Bottom Bar clearance on mobile (strict overflow-x containment) */}
-        <main className="flex-1 p-3.5 sm:p-5 md:p-8 overflow-y-auto overflow-x-hidden w-full max-w-full pb-24 lg:pb-8">
+        {/* ONLY the main content area scrolls vertically! */}
+        <main className="flex-1 p-3.5 sm:p-5 md:p-8 overflow-y-auto overflow-x-hidden w-full pb-24 lg:pb-8">
           {children}
         </main>
 

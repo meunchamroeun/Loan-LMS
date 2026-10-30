@@ -84,7 +84,7 @@ export function Navbar({ onOpenMenu }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-3.5 sm:px-6 border-b border-slate-200/80 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90 backdrop-blur-md w-full overflow-hidden">
+    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-3.5 sm:px-6 border-b border-slate-200/80 bg-white/90 dark:border-slate-800 dark:bg-slate-900/90 backdrop-blur-md w-full overflow-hidden shrink-0">
       {/* Left Area: Mobile Hamburger & Brand Logo, or Desktop Search */}
       <div className="flex items-center gap-2.5 min-w-0">
         {/* Mobile Hamburger (visible on < lg) */}

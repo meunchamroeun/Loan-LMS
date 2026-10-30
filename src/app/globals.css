@@ -39,8 +39,10 @@
   --ring: #60a5fa;
 }
 
-html {
-  overflow-x: hidden;
+html,
+body {
+  height: 100%;
+  overflow: hidden;
   max-width: 100vw;
   width: 100%;
 }
@@ -49,9 +51,6 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-feature-settings: "rlig" 1, "calt" 1;
-  overflow-x: hidden;
-  max-width: 100vw;
-  width: 100%;
   position: relative;
 }
 
